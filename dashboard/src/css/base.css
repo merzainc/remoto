@@ -1,0 +1,39 @@
+@tailwind base;
+
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  height: 100%;
+  font-family: 'Inter var', -apple-system, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1, 'cv02', 'cv03', 'cv04', 'cv11'; /* fix for Chrome */
+}
+
+body {
+  min-height: 100%;
+}
+
+abbr[title] {
+  text-decoration: none;
+}
+
+@layer base {
+  :root {
+    /* Light shadows */
+    --remota-theme-shadows-none: 0 0 transparent;
+    --remota-theme-shadows-xs: 0 1px 3px rgba(0, 0, 0, 0.025),
+      0 1px 2px rgba(0, 0, 0, 0.05);
+    --remota-theme-shadows-sm: 0 3px 6px rgba(0, 0, 0, 0.08),
+      0 2px 4px rgba(0, 0, 0, 0.07);
+    --remota-theme-shadows-md: 0 10px 20px rgba(0, 0, 0, 0.1),
+      0 3px 6px rgba(0, 0, 0, 0.05);
+    --remota-theme-shadows-lg: 0 15px 25px rgba(0, 0, 0, 0.12),
+      0 5px 10px rgba(0, 0, 0, 0.05);
+    --remota-theme-shadows-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+    /* Heading Font sizing */
+    --remota-theme-heading-base-font-size: 12px;
+  }
+}
