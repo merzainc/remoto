@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remoto/core/colors.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

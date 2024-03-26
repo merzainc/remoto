@@ -18,7 +18,8 @@ class _TorchLightState extends State<TorchLight> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _switchFlashlight();
+    //turn off flash light on app launch
+    // _switchFlashlight();
   }
 
   @override

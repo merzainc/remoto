@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:remoto/core/colors.dart';
+import 'package:remoto/gen/assets.gen.dart';
+import 'package:remoto/pages/account.dart';
 import 'package:remoto/pages/inbox.dart';
 import 'package:remoto/pages/patrol_orders.dart';
 import 'package:remoto/pages/reports.dart';
@@ -91,10 +93,10 @@ Widget _buildMenuItems(BuildContext context) => Container(
       children: [
         ListTile(
           visualDensity: const VisualDensity(horizontal: 0, vertical: -3),
-          leading: const Icon(
-            FeatherIcons.bell,
-            size: 20,
+          leading: ImageIcon(
+            AssetImage(Assets.icons.messages.path),
             color: RemotoColors.secondary,
+            size: 20,
           ),
           title: const Text(
             'Notifications',
@@ -108,8 +110,8 @@ Widget _buildMenuItems(BuildContext context) => Container(
         ),
         ListTile(
           visualDensity: const VisualDensity(horizontal: 0, vertical: -3),
-          leading: const Icon(
-            FeatherIcons.mapPin,
+          leading: ImageIcon(
+            AssetImage(Assets.icons.destination.path),
             size: 20,
             color: RemotoColors.secondary,
           ),
@@ -157,7 +159,7 @@ Widget _buildMenuItems(BuildContext context) => Container(
             //closes navigation before drawer
             Navigator.pop(context);
             Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SettingsPage()));
+                MaterialPageRoute(builder: (context) => const ProfilePage()));
           },
         ),
         ListTile(
