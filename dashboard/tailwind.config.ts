@@ -1,7 +1,8 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-const plugin = require('tailwindcss/plugin');
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
+
+const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -17,68 +18,25 @@ module.exports = {
       xl: 'var(--remota-theme-shadows-xl)',
     },
     extend: {
-      borderColor: {
-        default: '#D7DBDF',
-        secondary: '#DFE3E6',
-      },
-      backgroundColor: {
-        default: '#FFFFFF',
-        screen: '#FBFCFD',
-        selected: '#e6e8eb',
-        subtle: '#f8f9fa',
-        hover: '#eceef0',
-        element: '#ECEEF0',
-      },
-      colors: {
-        default: '#11181C',
-        secondary: '#687076',
-      },
       height: {
         15: '3.75rem',
       },
       fontSize: {
-        lg: [
-          '18px',
-          {
-            lineHeight: 1.5,
-          },
-        ],
-        base: [
-          '16px',
-          {
-            lineHeight: 1.625,
-            letterSpacing: '-0.011rem',
-          },
-        ],
-        sm: [
-          '15px',
-          {
-            lineHeight: 1.6,
-            letterSpacing: '-0.009rem',
-          },
-        ],
-        xs: [
-          '14px',
-          {
-            lineHeight: 1.57,
-            letterSpacing: '-0.006rem',
-          },
-        ],
         '2xs': [
           '13px',
           {
-            lineHeight: 1.61,
+            lineHeight: '1.61',
             letterSpacing: '-0.003rem',
           },
         ],
         '3xs': [
           '12px',
           {
-            lineHeight: 1.58,
+            lineHeight: '1.58',
           },
         ],
       },
-      typography: (theme) => ({
+      typography: (theme: (arg0: string) => any[]) => ({
         DEFAULT: {
           css: {
             maxWidth: 'none',
@@ -267,3 +225,4 @@ module.exports = {
     require('@tailwindcss/typography'),
   ],
 };
+export default config;
