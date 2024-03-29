@@ -1,9 +1,5 @@
 @tailwind base;
 
-.dark {
-  color-scheme: dark;
-}
-
 html {
   height: 100%;
   font-family: 'Inter var', -apple-system, 'Segoe UI', Roboto, Oxygen, Ubuntu,

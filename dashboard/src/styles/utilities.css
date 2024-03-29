@@ -7,11 +7,6 @@
   }
 }
 
-.changing-theme,
-.changing-theme * {
-  transition: none !important;
-}
-
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
