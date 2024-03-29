@@ -1,9 +1,9 @@
 //@ts-nocheck
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
-import { db } from "@/helpers/db";
+import { db } from '@/helpers/db';
 
 export const authOptions: NextAuthOptions = {
   // huh any! I know.
@@ -11,10 +11,7 @@ export const authOptions: NextAuthOptions = {
   // @see https://github.com/prisma/prisma/issues/16117
   adapter: PrismaAdapter(db as any),
   session: {
-    strategy: "jwt",
-  },
-  pages: {
-    // signIn: "/login",
+    strategy: 'jwt',
   },
   providers: [
     GoogleProvider({
