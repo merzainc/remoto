@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:relative_scale/relative_scale.dart';
 import 'package:remoto/core/colors.dart';
-import 'package:remoto/gen/assets.gen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,145 +10,162 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final bool _isSwitched = false;
+  bool light = true;
   @override
   Widget build(BuildContext context) {
     return RelativeBuilder(
       builder: (context, height, width, sy, sx) {
         return (Scaffold(
+          backgroundColor: RemotoColors.background,
           appBar: AppBar(
               title: const Text(
-            'Account',
+            'Settings',
             style: TextStyle(
-                fontSize: 17, color: Colors.white, fontWeight: FontWeight.w700),
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.w700),
           )),
-          body: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: sx(20),
-                vertical: sy(10),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                // border: Border.all(
-                //   color: RemotoColors.body,
-                //   width: sy(1),
-                // ),
-                boxShadow: [
-                  BoxShadow(
-                    color: RemotoColors.black.withOpacity(0.1),
-                    blurRadius: 1,
-                    offset: const Offset(0, 1),
+          body: Wrap(
+            children: [
+              Container(
+                  padding: EdgeInsets.only(
+                    left: sx(20),
+                    top: sy(5),
+                    bottom: sy(5),
+                    // horizontal: sx(20),
+                    // vertical: sy(5),
                   ),
-                ],
-                // borderRadius: BorderRadius.circular(10),
-              ),
-              child: Wrap(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(bottom: sy(7)),
-                    child: const Text(
-                      'Patrol Orders',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: RemotoColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          ImageIcon(
-                            AssetImage(Assets.icons.destination.path),
-                            color: RemotoColors.secondary,
-                            size: sy(10),
-                          ),
-                          SizedBox(
-                            height: sy(23),
-                          ),
-                          ImageIcon(
-                            AssetImage(Assets.icons.destination.path),
-                            color: RemotoColors.secondary,
-                            size: sy(10),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: sx(10),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Patrol Location',
-                                  style: TextStyle(
-                                    color: RemotoColors.secondary,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: sy(7),
-                                  ),
-                                ),
-                                Text(
-                                  'S Block, 5:54 PM',
-                                  style: TextStyle(
-                                    color: RemotoColors.black,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: sy(9),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: sy(10),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Patrol Location',
-                                  style: TextStyle(
-                                    color: RemotoColors.secondary,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: sy(7),
-                                  ),
-                                ),
-                                Text(
-                                  'Small Gate, 10:30 AM',
-                                  style: TextStyle(
-                                    color: RemotoColors.black,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: sy(9),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: RemotoColors.black.withOpacity(0.1),
+                        blurRadius: 1,
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
-                ],
-              )),
+                  child: const Wrap(
+                    children: [
+                      Text(
+                        'ACCOUNT',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: RemotoColors.primaryText,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      ListTile(
+                        dense: true,
+                        visualDensity:
+                            VisualDensity(horizontal: 0, vertical: -4),
+                        contentPadding: EdgeInsets.only(left: 0.0, top: 0),
+                        title: Text(
+                          'Push Notifications',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Enable this option to avoid missing orders',
+                          style: TextStyle(color: RemotoColors.primaryText),
+                        ),
+                      ),
+                      Divider(
+                        color: RemotoColors.border,
+                      ),
+                      ListTile(
+                        dense: true,
+                        visualDensity:
+                            VisualDensity(horizontal: 0, vertical: -4),
+                        contentPadding: EdgeInsets.only(left: 0.0, top: 0),
+                        title: Text(
+                          'Distance Units',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Prefer other distance metric units',
+                          style: TextStyle(color: RemotoColors.primaryText),
+                        ),
+                      ),
+                    ],
+                  )),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: sx(10), vertical: sy(10)),
+                child: const Text(
+                  'We gather required diagnostic data to keep Remoto secure, up-to-date and performing as expected on the device it is installed.',
+                  style: TextStyle(color: RemotoColors.primaryText),
+                ),
+              ),
+              Container(
+                  padding: EdgeInsets.only(
+                    left: sx(20),
+                    top: sy(5),
+                    bottom: sy(5),
+                    // horizontal: sx(20),
+                    // vertical: sy(5),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: RemotoColors.black.withOpacity(0.1),
+                        blurRadius: 1,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: const Wrap(
+                    children: [
+                      Text(
+                        'GENERAL',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: RemotoColors.primaryText,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      ListTile(
+                        dense: true,
+                        visualDensity:
+                            VisualDensity(horizontal: 0, vertical: -4),
+                        contentPadding: EdgeInsets.only(left: 0.0, top: 0),
+                        title: Text(
+                          'Push Notifications',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Enable this option to avoid missing orders',
+                          style: TextStyle(color: RemotoColors.primaryText),
+                        ),
+                      ),
+                      Divider(
+                        color: RemotoColors.border,
+                      ),
+                      ListTile(
+                        dense: true,
+                        visualDensity:
+                            VisualDensity(horizontal: 0, vertical: -4),
+                        contentPadding: EdgeInsets.only(left: 0.0, top: 0),
+                        title: Text(
+                          'Distance Units',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Prefer other distance metric units',
+                          style: TextStyle(color: RemotoColors.primaryText),
+                        ),
+                      ),
+                    ],
+                  ))
+            ],
+          ),
         ));
       },
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //         title: const Text(
-  //       'Account',
-  //       style: TextStyle(
-  //           fontSize: 17, color: Colors.white, fontWeight: FontWeight.w700),
-  //     )),
-  //     body: const Center(
-  //       child: Text('Profile Page'),
-  //     ),
-  //   );
-  // }
 }

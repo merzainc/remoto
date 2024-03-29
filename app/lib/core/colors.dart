@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class RemotoColors {
   static const Color primary = Color(0xFF229ED9);
+  static const Color fadedWhite = Color(0xFFF7F8F9);
   static const Color primary3 = Color(0xFF2AABEE);
   static const Color secondary = Color(0xFF707579);
   static const Color black = Color(0xFF000000);
@@ -11,4 +12,8 @@ class RemotoColors {
   static const Color gray2 = Color(0xFFE5E5EA);
   static const Color gray3 = Color(0xFFF2F2F7);
   static const Color border = Color(0xFFE8ECF4);
+
+  // New Color Pallete
+  static const Color primaryText = Color.fromRGBO(112, 117, 121, 1);
+  static const Color background = Color(0xFFF4F4F5);
 }
