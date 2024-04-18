@@ -85,7 +85,7 @@ function DrawerItems() {
       labelStyle={{
         fontFamily: 'Inter-Regular',
         color: Colors.black,
-        fontSize: 15,
+        fontSize: 14.5,
         marginLeft: -8,
       }}
       key={index}
