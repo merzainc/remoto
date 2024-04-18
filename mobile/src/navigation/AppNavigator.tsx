@@ -1,21 +1,35 @@
+import { ActivityBoxIcon } from '@/components/icons/Icons';
 import Colors from '@/constants/Colors';
 import ActivityScreen from '@/screens/ActivityScreen';
 import HomeScreen from '@/screens/HomeScreen';
 import SettingsScreen from '@/screens/SettingsScreen';
 import TasksScreen from '@/screens/TasksScreen';
 import { ArrowLeftIcon, lightTheme, palette } from '@expo/styleguide-native';
-import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DrawerContent from './DrawerContent';
 import { navigationRef } from './RootNavigation';
-import { ActivityBoxIcon } from '@/components/icons/Icons';
 
 const Drawer = createDrawerNavigator();
 
 export default function AppNavigator() {
+  // const registerForPushNotifications = async () => {
+  //   try {
+  //     const permission = await Notifications.getPermissionsAsync;
+  //     if (!permission) return;
+  //     const token = await Notifications.getExpoPushTokenAsync();
+  //     console.log(token);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // React.useEffect(() => {
+  //   registerForPushNotifications();
+  // }, []);
+
   return (
     <Drawer.Navigator
       initialRouteName='Home'

@@ -7,6 +7,7 @@ import { NativeSyntheticEvent, StyleSheet, Text, View } from 'react-native';
 import MapView, { Circle } from 'react-native-maps';
 
 import Button from '../../components/AppButton';
+import mapStyles from '@/constants/MapStyles';
 
 const GEOFENCING_TASK = 'geofencing';
 
@@ -190,6 +191,7 @@ export default function GeofencingScreen() {
         initialRegion={state.initialRegion}
         onPress={onMapPress}
         showsUserLocation
+        customMapStyle={mapStyles}
       >
         {renderRegions()}
       </MapView>
@@ -234,11 +236,14 @@ TaskManager.defineTask(
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Expo Geofencing',
+        title: 'Remoto Geofencing',
         body: `You're ${stateString} a region ${region.identifier}`,
         data: region,
       },
-      trigger: null,
+      trigger: {
+        seconds: 60 * 1,
+        repeats: true,
+      },
     });
   }
 );
