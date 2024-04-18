@@ -1,0 +1,100 @@
+{
+  "expo": {
+    "name": "Remoto",
+    "slug": "remoto-app",
+    "version": "1.0.15",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "platforms": ["ios", "android"],
+    "description": "Remotely monitor your security team activites from anywhere.",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#3390EC"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "notification": {
+      "icon": "./assets/logo-dark.png",
+      "color": "#000000",
+      "iosDisplayInForeground": true
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch", "remote-notification"],
+        "NSCameraUsageDescription": "This app uses the camera to take images for patrol activites."
+      }
+    },
+    "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBoQANxcjuI5NnkeDrXJEogG06WCdl4qcA"
+        }
+      },
+      "package": "com.merzalabs.remoto",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.WAKE_LOCK"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo-dark.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "plugins": [
+      "expo-font",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "notification": {
+            "icon": "./assets/logo-dark.png",
+            "color": "#000000",
+            "iosDisplayInForeground": true
+          }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(Remoto) to use your location."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(Remoto) to access your camera for patrol activites.",
+          "microphonePermission": "Allow $(Remoto) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "34.0.0",
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "useLegacyPackaging": true
+          },
+          "ios": {
+            "deploymentTarget": "13.4"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "48a57a2f-f856-4185-8a54-9a96888e0e35"
+      }
+    },
+    "owner": "ratcatcher"
+  }
+}
