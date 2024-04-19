@@ -1,7 +1,7 @@
 import { lightTheme } from '@expo/styleguide-native';
 import { Heading, TextInput, View } from 'expo-dev-client-components';
 import React, { useState } from 'react';
-import { Image, Linking, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import authApi from '../api/auth';
 import Screen from '../components/Screen';
 import { StyledText } from '../components/StyledText';
@@ -9,7 +9,6 @@ import { StyledText } from '../components/StyledText';
 import WithFeedback from '@/components/WithFeedback';
 import Colors from '@/constants/Colors';
 import useAuth from '../auth/useAuth';
-import { Button } from '@/components/Button';
 
 export default function LoginScreen() {
   const [guard, setGuard] = useState({ force: '', password: '' });
@@ -85,14 +84,6 @@ export default function LoginScreen() {
         >
           Sign In
         </WithFeedback>
-        <Button
-          label='Forgot Password'
-          style={{ alignItems: 'center', marginVertical: 12 }}
-          onPress={() =>
-            Linking.openURL('https://remoto-alpha.vercel.app/password/reset')
-          }
-          theme='secondary'
-        />
       </View>
     </Screen>
   );

@@ -8,6 +8,7 @@ import MapView, { Circle } from 'react-native-maps';
 
 import Button from '@/components/AppButton';
 import mapStyles from '@/constants/MapStyles';
+import logger from '@/utility/logger';
 
 const GEOFENCING_TASK = 'geofencing';
 
@@ -227,12 +228,12 @@ TaskManager.defineTask(
     const stateString =
       Location.GeofencingRegionState[region.state].toLowerCase();
 
-    // console.log(`${stateString} region ${region.identifier}`);
+    logger.log(`${stateString} region ${region.identifier}`);
 
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Remoto Geofencing',
-        body: `You have move ${stateString} the identifier-name region ${region.identifier}`,
+        body: `You have move ${stateString} the indentifier region`,
         data: region,
       },
       trigger: null,

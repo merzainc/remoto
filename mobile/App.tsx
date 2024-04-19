@@ -1,11 +1,13 @@
 import Colors from '@/constants/Colors';
 import HomeApp from '@/HomeApp';
+import logger from '@/utility/logger';
+import Bugsnag from '@bugsnag/expo';
 import { lightTheme } from '@expo/styleguide-native';
 import Constants from 'expo-constants';
+import { View, Text } from 'expo-dev-client-components';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import registerNNPushToken from 'native-notify';
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -22,9 +24,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
+logger.start();
+
+// Create the error boundary...
+const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
+
 function handleRegistrationError(errorMessage: string) {
   alert(errorMessage);
-  // throw new Error(errorMessage);
+  logger.log(errorMessage);
 }
 
 async function registerForPushNotificationsAsync() {
@@ -49,6 +56,9 @@ async function registerForPushNotificationsAsync() {
       handleRegistrationError(
         'Permission not granted to get push token for push notification!'
       );
+      logger.log(
+        'Permission not granted to get push token for push notification!'
+      );
       return;
     }
     const projectId =
@@ -63,6 +73,7 @@ async function registerForPushNotificationsAsync() {
           projectId,
         })
       ).data;
+
       // console.log(pushTokenString);
       return pushTokenString;
     } catch (e: unknown) {
@@ -84,8 +95,6 @@ const theme = {
 };
 
 export default function App() {
-  //register to native notify
-  registerNNPushToken(20852, 'ZbD8vVPmDBt1W9PpXMi5Oj');
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
@@ -105,7 +114,8 @@ export default function App() {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        // console.log(response);
+        logger.log(response);
+        logger.log(response);
       });
 
     return () => {
@@ -118,13 +128,21 @@ export default function App() {
     };
   }, []);
 
+  const ErrorView = () => (
+    <View padding='medium'>
+      <Text>Inform users of an error in the component tree.</Text>
+    </View>
+  );
+
   return (
     <GestureHandlerRootView style={styles.container}>
-      <PaperProvider theme={theme}>
-        <SafeAreaProvider>
-          <HomeApp />
-        </SafeAreaProvider>
-      </PaperProvider>
+      <ErrorBoundary FallbackComponent={ErrorView}>
+        <PaperProvider theme={theme}>
+          <SafeAreaProvider>
+            <HomeApp />
+          </SafeAreaProvider>
+        </PaperProvider>
+      </ErrorBoundary>
     </GestureHandlerRootView>
   );
 }

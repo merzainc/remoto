@@ -18,6 +18,7 @@ import Button from '@/components/AppButton';
 import Colors from '@/constants/Colors';
 import mapStyles from '@/constants/MapStyles';
 import usePermissions from '@/hooks/usePermissions';
+import logger from '@/utility/logger';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -120,7 +121,7 @@ function BackgroundLocationMapView() {
       if (
         (await Location.getBackgroundPermissionsAsync()).status !== 'granted'
       ) {
-        console.log(
+        logger.log(
           'Missing background location permissions. Make sure it is granted in the OS Settings.'
         );
         return;
@@ -198,7 +199,7 @@ function BackgroundLocationMapView() {
       if (
         (await Location.getBackgroundPermissionsAsync()).status !== 'granted'
       ) {
-        console.log(
+        logger.log(
           'Missing background location permissions. Make sure it is granted in the OS Settings.'
         );
         return;
@@ -500,7 +501,7 @@ TaskManager.defineTask(
         longitude: coords.longitude,
       }));
 
-      console.log(`Received new locations at ${new Date()}:`, locations);
+      logger.log(`Received new locations at ${new Date()}: ${locations}`);
 
       savedLocations.push(...newLocations);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));

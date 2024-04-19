@@ -1,18 +1,23 @@
 {
   "expo": {
     "name": "Remoto",
-    "slug": "remoto-app",
+    "slug": "remoto",
     "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon-white.png",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "description": "Remotely monitor your security team activites from anywhere.",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#3390EC"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "notification": {
       "icon": "./assets/logo-dark.png",
       "color": "#000000",
@@ -21,7 +26,11 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"],
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ],
         "NSCameraUsageDescription": "This app uses the camera to take images for patrol activites."
       }
     },
@@ -89,9 +98,20 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "8bca35ea-9e9e-4f92-b55a-4b23e0f379d3"
+        "projectId": "4ada2d4b-b86a-4546-94ba-67786a95aba3"
+      },
+      "bugsnag": {
+        "apiKey": "52ff4d7cfc1c58dac0e70c78ba3be4f9"
       }
     },
-    "owner": "ratcatcher"
+    "owner": "ratcatcher",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
   }
 }
