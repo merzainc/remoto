@@ -6,7 +6,8 @@ import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import { EventEmitter, EventSubscription } from 'fbemitter';
 import * as React from 'react';
-import { Modal, Platform, StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'expo-dev-client-components';
+import { Modal, Platform, StyleSheet } from 'react-native';
 import MapView, {
   Callout,
   Marker,
@@ -436,33 +437,33 @@ const PermissionsModal = () => {
       }}
     >
       <View
+        padding='small'
         style={{
           flex: 1,
           justifyContent: 'space-around',
           alignItems: 'center',
+          backgroundColor: Colors.bgBody,
         }}
       >
         <View
           style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}
         >
-          <Text style={styles.modalHeader}>Background location access</Text>
+          <Text style={styles.modalHeader}>
+            Background location access required
+          </Text>
 
           <Text style={styles.modalText}>
-            This app collects location data to enable updating the MapView in
-            the background even when the app is closed or not in use. Otherwise,
-            your location on the map will only be updated while the app is
-            foregrounded.
-          </Text>
-          <Text style={styles.modalText}>
-            This data is not used for anything other than updating the position
-            on the map, and this data is never shared with anyone.
+            This app collects location data to enable updating the control
+            center in the background even when the app is closed or not in use.
+            Otherwise, your location on the map will only be updated while the
+            app is foregrounded.
           </Text>
         </View>
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
           <Button
-            title='Request background location permission'
+            title='Request background location'
             style={styles.button}
             onPress={async () => {
               // Need both background and foreground permissions
@@ -559,5 +560,5 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   modalHeader: { padding: 12, fontSize: 20, fontWeight: '800' },
-  modalText: { padding: 8, fontWeight: '600' },
+  modalText: { padding: 8, fontWeight: '600', color: Colors.textColor },
 });
