@@ -4,7 +4,7 @@
     "slug": "remoto-app",
     "version": "1.0.15",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-white.png",
     "platforms": ["ios", "android"],
     "description": "Remotely monitor your security team activites from anywhere.",
     "splash": {
@@ -31,7 +31,7 @@
           "apiKey": "AIzaSyBoQANxcjuI5NnkeDrXJEogG06WCdl4qcA"
         }
       },
-      "package": "com.merzalabs.remoto",
+      "package": "com.merzalabs",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
@@ -41,10 +41,7 @@
         "android.permission.ACCESS_BACKGROUND_LOCATION",
         "android.permission.WAKE_LOCK"
       ],
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/logo-dark.png",
-        "backgroundColor": "#ffffff"
-      }
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "expo-font",
@@ -92,7 +89,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "48a57a2f-f856-4185-8a54-9a96888e0e35"
+        "projectId": "8bca35ea-9e9e-4f92-b55a-4b23e0f379d3"
       }
     },
     "owner": "ratcatcher"

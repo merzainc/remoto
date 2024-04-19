@@ -37,6 +37,7 @@
     "expo-task-manager": "~11.7.3",
     "fbemitter": "^3.0.0",
     "firebase": "^10.11.0",
+    "native-notify": "^4.0.4",
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-gesture-handler": "~2.14.0",

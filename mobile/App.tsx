@@ -1,6 +1,11 @@
 import Colors from '@/constants/Colors';
 import HomeApp from '@/HomeApp';
 import { lightTheme } from '@expo/styleguide-native';
+import Constants from 'expo-constants';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import registerNNPushToken from 'native-notify';
+import { useState, useRef, useEffect } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -8,51 +13,23 @@ import {
   PaperProvider,
 } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
-import * as Device from 'expo-device';
-
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: Colors.primary,
-    backgroundColor: lightTheme.background.default,
-    secondary: lightTheme.background.secondary,
-  },
-};
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: true,
   }),
 });
 
-export default function App() {
-  return (
-    <GestureHandlerRootView style={styles.container}>
-      <PaperProvider theme={theme}>
-        <SafeAreaProvider>
-          <HomeApp />
-        </SafeAreaProvider>
-      </PaperProvider>
-    </GestureHandlerRootView>
-  );
+function handleRegistrationError(errorMessage: string) {
+  alert(errorMessage);
+  // throw new Error(errorMessage);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export async function registerForPushNotificationsAsync() {
-  let token;
-
+async function registerForPushNotificationsAsync() {
   if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
+    Notifications.setNotificationChannelAsync('default', {
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
@@ -69,22 +46,91 @@ export async function registerForPushNotificationsAsync() {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
+      handleRegistrationError(
+        'Permission not granted to get push token for push notification!'
+      );
       return;
     }
-    // Learn more about projectId:
-    // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
-
-    if (Constants.easConfig?.projectId) {
-      token = (
+    const projectId =
+      Constants?.expoConfig?.extra?.eas?.projectId ??
+      Constants?.easConfig?.projectId;
+    if (!projectId) {
+      handleRegistrationError('Project ID not found');
+    }
+    try {
+      const pushTokenString = (
         await Notifications.getExpoPushTokenAsync({
-          projectId: Constants.easConfig.projectId, // you can hard code project id if you dont want to use expo Constants
+          projectId,
         })
       ).data;
+      // console.log(pushTokenString);
+      return pushTokenString;
+    } catch (e: unknown) {
+      handleRegistrationError(`${e}`);
     }
   } else {
-    alert('Must use physical device for Push Notifications');
+    handleRegistrationError('Must use physical device for push notifications');
   }
-
-  return token;
 }
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: Colors.primary,
+    backgroundColor: lightTheme.background.default,
+    secondary: lightTheme.background.secondary,
+  },
+};
+
+export default function App() {
+  //register to native notify
+  registerNNPushToken(20852, 'ZbD8vVPmDBt1W9PpXMi5Oj');
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState<
+    Notifications.Notification | undefined
+  >(undefined);
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => setExpoPushToken(token ?? ''))
+      .catch((error: any) => setExpoPushToken(`${error}`));
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        // console.log(response);
+      });
+
+    return () => {
+      notificationListener.current &&
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+      responseListener.current &&
+        Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  return (
+    <GestureHandlerRootView style={styles.container}>
+      <PaperProvider theme={theme}>
+        <SafeAreaProvider>
+          <HomeApp />
+        </SafeAreaProvider>
+      </PaperProvider>
+    </GestureHandlerRootView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

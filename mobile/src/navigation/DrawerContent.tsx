@@ -1,6 +1,6 @@
 import useAuth from '@/auth/useAuth';
 import { BriefCaseIcon, CogIcon, HomeIcon } from '@/components/icons';
-import { ActivityBoxIcon } from '@/components/icons/Icons';
+import { ActivityBoxIcon, BoundaryIcon } from '@/components/icons/Icons';
 import Colors from '@/constants/Colors';
 import { spacing } from '@expo/styleguide-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
@@ -21,6 +21,7 @@ const drawerList = [
   { icon: HomeIcon, label: 'Home', navigateTo: 'Home' },
   { icon: BriefCaseIcon, label: 'Patrol Tasks', navigateTo: 'Tasks' },
   { icon: ActivityBoxIcon, label: 'Activity', navigateTo: 'Activity' },
+  { icon: BoundaryIcon, label: 'Boundary', navigateTo: 'Boundary' },
   { icon: CogIcon, label: 'Settings', navigateTo: 'Settings' },
 ];
 

@@ -6,11 +6,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import AuthContext, { User } from './auth/context';
 import authStorage from './auth/storage';
 import OfflineNotice from './components/OfflineNotice';
+import StatusBar from './components/StatusBar';
 import ThemedStatusBar from './components/ThemedStatusBar';
 import { AuthNavigator } from './navigation';
 import AppNavigator from './navigation/AppNavigator';
 import { navigationRef } from './navigation/RootNavigation';
-import StatusBar from './components/StatusBar';
 
 SplashScreen.preventAutoHideAsync();
 

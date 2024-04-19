@@ -11,25 +11,11 @@ import { Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DrawerContent from './DrawerContent';
 import { navigationRef } from './RootNavigation';
+import BoundaryScreen from '@/screens/BoundaryScreen';
 
 const Drawer = createDrawerNavigator();
 
 export default function AppNavigator() {
-  // const registerForPushNotifications = async () => {
-  //   try {
-  //     const permission = await Notifications.getPermissionsAsync;
-  //     if (!permission) return;
-  //     const token = await Notifications.getExpoPushTokenAsync();
-  //     console.log(token);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // React.useEffect(() => {
-  //   registerForPushNotifications();
-  // }, []);
-
   return (
     <Drawer.Navigator
       initialRouteName='Home'
@@ -62,14 +48,6 @@ export default function AppNavigator() {
                 }}
               >
                 <ActivityBoxIcon color={palette.light.white} />
-                {/* <Ionicons
-                  name='flashlight-outline'
-                  style={{
-                    transform: [{ rotate: '-45deg' }],
-                  }}
-                  color={palette.light.white}
-                  size={24}
-                /> */}
               </TouchableOpacity>
             );
           },
@@ -108,6 +86,22 @@ export default function AppNavigator() {
           },
         }}
         component={ActivityScreen}
+      />
+      <Drawer.Screen
+        name='Boundary'
+        options={{
+          headerLeft: () => {
+            return (
+              <TouchableOpacity
+                style={{ paddingLeft: 16 }}
+                onPress={() => navigationRef.goBack()}
+              >
+                <ArrowLeftIcon size={24} color={palette.light.white} />
+              </TouchableOpacity>
+            );
+          },
+        }}
+        component={BoundaryScreen}
       />
       <Drawer.Screen
         name='Settings'
