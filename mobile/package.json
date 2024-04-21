@@ -1,6 +1,6 @@
 {
   "name": "remotolabs",
-  "version": "1.0.15",
+  "version": "1.1.15",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -8,7 +8,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "ts:check": "tsc",
-    "eas-build-on-success": "bunx bugsnag-eas-build-on-success"
+    "eas-build-on-success": "npx bugsnag-eas-build-on-success"
   },
   "dependencies": {
     "@bugsnag/expo": "^50.0.0",

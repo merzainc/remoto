@@ -338,19 +338,6 @@ function BackgroundLocationMapView() {
     }
   }, []);
 
-  const renderPolyline = React.useCallback(() => {
-    if (state.savedLocations.length === 0) {
-      return null;
-    }
-    return (
-      <Polyline
-        coordinates={state.savedLocations}
-        strokeWidth={3}
-        strokeColor={Colors.tintColor}
-      />
-    );
-  }, [state.savedLocations]);
-
   return (
     <View style={styles.screen}>
       <PermissionsModal />
