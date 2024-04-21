@@ -5,7 +5,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useEffect, useState } from 'react';
 import AuthContext, { User } from './auth/context';
 import authStorage from './auth/storage';
-import OfflineNotice from './components/OfflineNotice';
 import StatusBar from './components/StatusBar';
 import ThemedStatusBar from './components/ThemedStatusBar';
 import { AuthNavigator } from './navigation';
@@ -72,7 +71,6 @@ export default function HomeApp() {
         onLayout={onLayoutRootView}
       >
         <AuthContext.Provider value={{ user, setUser }}>
-          <OfflineNotice />
           <NavigationContainer ref={navigationRef}>
             {user ? <AppNavigator /> : <AuthNavigator />}
           </NavigationContainer>
