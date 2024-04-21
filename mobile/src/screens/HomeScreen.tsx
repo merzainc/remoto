@@ -437,7 +437,6 @@ const PermissionsModal = () => {
       }}
     >
       <View
-        padding='small'
         style={{
           flex: 1,
           justifyContent: 'space-around',
@@ -449,7 +448,7 @@ const PermissionsModal = () => {
           style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}
         >
           <Text style={styles.modalHeader}>
-            Background location access required
+            Permissions required to proceed
           </Text>
 
           <Text style={styles.modalText}>
@@ -463,7 +462,7 @@ const PermissionsModal = () => {
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
           <Button
-            title='Request background location'
+            title='Allow permission'
             style={styles.button}
             onPress={async () => {
               // Need both background and foreground permissions
@@ -473,7 +472,7 @@ const PermissionsModal = () => {
             }}
           />
           <Button
-            title='Continue without background location permission'
+            title='Continue without'
             style={styles.button}
             onPress={() => setShowPermissionsModal(!showPermissionsModal)}
           />
