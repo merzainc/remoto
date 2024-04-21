@@ -111,11 +111,11 @@ export default function HomeScreen() {
     (async () => {
       if (!(await Location.isBackgroundLocationAvailableAsync())) {
         alert('Background location is not available in this application.');
-
+        logger.logMessage(
+          'Background location is not available in this application.'
+        );
         //open seetings
       }
-      if (!(await Notifications.requestPermissionsAsync()))
-        logger.log('Permission denied');
     })();
   }, []);
 
@@ -145,7 +145,7 @@ function BackgroundLocationMapView() {
       if (
         (await Location.getBackgroundPermissionsAsync()).status !== 'granted'
       ) {
-        logger.log(
+        logger.logMessage(
           'Missing background location permissions. Make sure it is granted in the OS Settings.'
         );
         return;
@@ -217,7 +217,7 @@ function BackgroundLocationMapView() {
       if (
         (await Location.getBackgroundPermissionsAsync()).status !== 'granted'
       ) {
-        logger.log(
+        logger.logMessage(
           'Missing background location permissions. Make sure it is granted in the OS Settings.'
         );
         return;

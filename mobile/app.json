@@ -48,6 +48,15 @@
       "expo-font",
       "expo-secure-store",
       [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
+          "organization": "omorfotechlabs",
+          "project": "remoto"
+        }
+      ],
+      [
         "expo-notifications",
         {
           "notification": {
@@ -82,25 +91,7 @@
             "deploymentTarget": "13.4"
           }
         }
-      ],
-      ["@bugsnag/plugin-expo-eas-sourcemaps"]
-    ],
-    "extra": {
-      "bugsnag": {
-        "apiKey": "52ff4d7cfc1c58dac0e70c78ba3be4f9"
-      },
-      "eas": {
-        "projectId": "7aca5b30-da00-46a6-b774-468fb7e615af"
-      }
-    },
-    "owner": "ratcatcher",
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "@bugsnag/expo/hooks/post-publish.js",
-          "config": {}
-        }
       ]
-    }
+    ]
   }
 }

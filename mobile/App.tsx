@@ -1,13 +1,12 @@
 import Colors from '@/constants/Colors';
 import HomeApp from '@/HomeApp';
 import logger from '@/utility/logger';
-import Bugsnag from '@bugsnag/expo';
 import { lightTheme } from '@expo/styleguide-native';
+import * as Sentry from '@sentry/react-native';
 import Constants from 'expo-constants';
-import { View, Text } from 'expo-dev-client-components';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -26,12 +25,9 @@ Notifications.setNotificationHandler({
 
 logger.start();
 
-// Create the error boundary...
-const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
-
 function handleRegistrationError(errorMessage: string) {
   alert(errorMessage);
-  logger.log(errorMessage);
+  logger.logMessage(errorMessage);
 }
 
 async function registerForPushNotificationsAsync() {
@@ -56,7 +52,7 @@ async function registerForPushNotificationsAsync() {
       handleRegistrationError(
         'Permission not granted to get push token for push notification!'
       );
-      logger.log(
+      logger.logMessage(
         'Permission not granted to get push token for push notification!'
       );
       return;
@@ -73,9 +69,11 @@ async function registerForPushNotificationsAsync() {
           projectId,
         })
       ).data;
-      logger.log(pushTokenString);
+      logger.logMessage('Token assigned: ' + pushTokenString);
       return pushTokenString;
     } catch (e: unknown) {
+      //@ts-ignore
+      logger.log(new Error(e.message + 'Failed token retrieval'));
       handleRegistrationError(`${e}`);
     }
   } else {
@@ -93,7 +91,7 @@ const theme = {
   },
 };
 
-export default function App() {
+function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
@@ -112,10 +110,7 @@ export default function App() {
       });
 
     responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        logger.log(response);
-        logger.log(response);
-      });
+      Notifications.addNotificationResponseReceivedListener((response) => {});
 
     return () => {
       notificationListener.current &&
@@ -125,23 +120,17 @@ export default function App() {
       responseListener.current &&
         Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
 
-  const ErrorView = () => (
-    <View padding='medium'>
-      <Text>Inform users of an error in the component tree.</Text>
-    </View>
-  );
+    logger.logMessage('App started');
+  }, []);
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <ErrorBoundary FallbackComponent={ErrorView}>
-        <PaperProvider theme={theme}>
-          <SafeAreaProvider>
-            <HomeApp />
-          </SafeAreaProvider>
-        </PaperProvider>
-      </ErrorBoundary>
+      <PaperProvider theme={theme}>
+        <SafeAreaProvider>
+          <HomeApp />
+        </SafeAreaProvider>
+      </PaperProvider>
     </GestureHandlerRootView>
   );
 }
@@ -151,3 +140,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default Sentry.wrap(App);

@@ -228,7 +228,7 @@ TaskManager.defineTask(
     const stateString =
       Location.GeofencingRegionState[region.state].toLowerCase();
 
-    logger.log(`${stateString} region ${region.identifier}`);
+    logger.logMessage(`${stateString} region ${region.identifier}`);
 
     await Notifications.scheduleNotificationAsync({
       content: {
