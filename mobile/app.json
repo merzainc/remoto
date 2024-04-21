@@ -5,19 +5,14 @@
     "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon-white.png",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "description": "Remotely monitor your security team activites from anywhere.",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#3390EC"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "notification": {
       "icon": "./assets/logo-dark.png",
       "color": "#000000",
@@ -26,11 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "location",
-          "fetch",
-          "remote-notification"
-        ],
+        "UIBackgroundModes": ["location", "fetch", "remote-notification"],
         "NSCameraUsageDescription": "This app uses the camera to take images for patrol activites."
       }
     },
@@ -86,9 +77,9 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
-            "buildToolsVersion": "34.0.0",
+            "compileSdkVersion": 31,
+            "targetSdkVersion": 31,
+            "buildToolsVersion": "31.0.0",
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
             "useLegacyPackaging": true
@@ -98,9 +89,7 @@
           }
         }
       ],
-      [
-        "@bugsnag/plugin-expo-eas-sourcemaps"
-      ]
+      ["@bugsnag/plugin-expo-eas-sourcemaps"]
     ],
     "extra": {
       "bugsnag": {
