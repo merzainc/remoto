@@ -14,6 +14,7 @@ import MapView, {
   Polyline,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
+import * as Notifications from 'expo-notifications';
 
 import Button from '@/components/AppButton';
 import Colors from '@/constants/Colors';
@@ -81,6 +82,26 @@ function reducer(state: State, action: Partial<State>): State {
   };
 }
 
+TaskManager.defineTask(
+  LOCATION_UPDATES_TASK,
+  async ({ data: { locations } }: any) => {
+    if (locations && locations.length > 0) {
+      const savedLocations = await getSavedLocations();
+      const newLocations = locations.map(({ coords }: any) => ({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      }));
+
+      console.log(`Received new locations at ${new Date()}: ${locations}`);
+
+      savedLocations.push(...newLocations);
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
+
+      locationEventsEmitter.emit('update', savedLocations);
+    }
+  }
+);
+
 export default function HomeScreen() {
   const [permission] = usePermissions(
     Location.requestForegroundPermissionsAsync
@@ -93,6 +114,8 @@ export default function HomeScreen() {
 
         //open seetings
       }
+      if (!(await Notifications.requestPermissionsAsync()))
+        logger.log('Permission denied');
     })();
   }, []);
 
@@ -127,7 +150,6 @@ function BackgroundLocationMapView() {
         );
         return;
       }
-      const { coords } = await Location.getCurrentPositionAsync();
       const isTracking = await Location.hasStartedLocationUpdatesAsync(
         LOCATION_UPDATES_TASK
       );
@@ -156,12 +178,7 @@ function BackgroundLocationMapView() {
           task?.options.showsBackgroundLocationIndicator,
         activityType: task?.options.activityType ?? null,
         savedLocations,
-        initialRegion: {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          latitudeDelta: 0.004,
-          longitudeDelta: 0.002,
-        },
+        initialRegion: null,
       });
     })();
 
@@ -212,9 +229,8 @@ function BackgroundLocationMapView() {
         showsBackgroundLocationIndicator:
           state.showsBackgroundLocationIndicator,
         timeInterval: 30 * 1000,
-        distanceInterval: 1,
-        deferredUpdatesInterval: 30 * 1000, // 0.45 minute
-        deferredUpdatesDistance: 1, // 1 meters
+        distanceInterval: 0.5,
+        deferredUpdatesDistance: 0,
         foregroundService: {
           notificationTitle: 'Remoto',
           notificationBody: 'Collecting precise location in the background',
@@ -266,7 +282,7 @@ function BackgroundLocationMapView() {
   }, [state.isTracking, startLocationUpdates, stopLocationUpdates]);
 
   const onAccuracyChange = React.useCallback(() => {
-    const currentAccuracy = locationAccuracyStates[state.accuracy];
+    const currentAccuracy = Location.Accuracy.BestForNavigation;
 
     dispatch({
       accuracy: currentAccuracy,
@@ -299,7 +315,7 @@ function BackgroundLocationMapView() {
       nextActivityType = Location.ActivityType.Other;
     }
     dispatch({
-      activityType: nextActivityType,
+      activityType: Location.ActivityType.AutomotiveNavigation,
     });
 
     if (state.isTracking) {
@@ -343,7 +359,7 @@ function BackgroundLocationMapView() {
           customMapStyle={mapStyles}
           ref={mapViewRef}
           style={styles.mapView}
-          showsCompass={true}
+          showsCompass={false}
           zoomControlEnabled
           provider={PROVIDER_GOOGLE}
           initialRegion={{
@@ -393,11 +409,6 @@ function BackgroundLocationMapView() {
                 }
               />
             )}
-            {/* <Button
-              title={`Accuracy: ${Location.Accuracy[state.accuracy]}`}
-              style={styles.button}
-              onPress={onAccuracyChange}
-            /> */}
           </View>
           <View style={styles.buttonsColumn}>
             <Button style={styles.button} onPress={onCenterMap}>
@@ -415,7 +426,10 @@ function BackgroundLocationMapView() {
           <Button
             title={state.isTracking ? 'Stop tracking' : 'Start tracking'}
             style={styles.button}
-            onPress={toggleTracking}
+            onPress={() => {
+              onAccuracyChange();
+              toggleTracking();
+            }}
           />
         </View>
       </View>
@@ -491,26 +505,6 @@ async function getSavedLocations() {
   }
 }
 
-TaskManager.defineTask(
-  LOCATION_UPDATES_TASK,
-  async ({ data: { locations } }: any) => {
-    if (locations && locations.length > 0) {
-      const savedLocations = await getSavedLocations();
-      const newLocations = locations.map(({ coords }: any) => ({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      }));
-
-      logger.log(`Received new locations at ${new Date()}: ${locations}`);
-
-      savedLocations.push(...newLocations);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
-
-      locationEventsEmitter.emit('update', savedLocations);
-    }
-  }
-);
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -558,6 +552,6 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.7)',
     margin: 20,
   },
-  modalHeader: { padding: 12, fontSize: 20, fontWeight: '800' },
+  modalHeader: { padding: 8, fontSize: 20, fontWeight: '800' },
   modalText: { padding: 8, fontWeight: '600', color: Colors.textColor },
 });

@@ -5,14 +5,19 @@
     "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon-white.png",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "description": "Remotely monitor your security team activites from anywhere.",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#3390EC"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "notification": {
       "icon": "./assets/logo-dark.png",
       "color": "#000000",
@@ -21,7 +26,11 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"],
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ],
         "NSCameraUsageDescription": "This app uses the camera to take images for patrol activites."
       }
     },
@@ -36,6 +45,7 @@
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO",
         "android.permission.ACCESS_BACKGROUND_LOCATION",
@@ -77,7 +87,7 @@
         {
           "android": {
             "compileSdkVersion": 34,
-            "targetSdkVersion": 33,
+            "targetSdkVersion": 34,
             "buildToolsVersion": "34.0.0",
             "enableProguardInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
@@ -87,14 +97,17 @@
             "deploymentTarget": "13.4"
           }
         }
+      ],
+      [
+        "@bugsnag/plugin-expo-eas-sourcemaps"
       ]
     ],
     "extra": {
-      "eas": {
-        "projectId": "4ada2d4b-b86a-4546-94ba-67786a95aba3"
-      },
       "bugsnag": {
         "apiKey": "52ff4d7cfc1c58dac0e70c78ba3be4f9"
+      },
+      "eas": {
+        "projectId": "7aca5b30-da00-46a6-b774-468fb7e615af"
       }
     },
     "owner": "ratcatcher",
