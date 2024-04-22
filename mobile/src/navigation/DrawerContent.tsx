@@ -32,10 +32,10 @@ const drawerList = [
 export default function DrawerContent(props: any) {
   const { user } = useAuth();
   return (
-    <View flex='1'>
+    <View flex='1' bg='default'>
       <DrawerContentScrollView {...props}>
         <Button.Container onPress={() => navigate('Settings')}>
-          <View px='medium' pt='large'>
+          <View px='medium' pt='large' pb='1.5'>
             <Row justify='between' align='center'>
               <Row align='start'>
                 <Image
@@ -88,7 +88,7 @@ function DrawerItems() {
       }}
       key={index}
     >
-      <Row padding='medium' align='center'>
+      <Row py='small' px='2' align='center'>
         {
           <>
             <item.icon

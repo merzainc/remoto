@@ -2,19 +2,13 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { Text, View } from 'expo-dev-client-components';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import { EventEmitter, EventSubscription } from 'fbemitter';
 import * as React from 'react';
-import { Text, View } from 'expo-dev-client-components';
 import { Modal, Platform, StyleSheet } from 'react-native';
-import MapView, {
-  Callout,
-  Marker,
-  Polyline,
-  PROVIDER_GOOGLE,
-} from 'react-native-maps';
-import * as Notifications from 'expo-notifications';
+import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import Button from '@/components/AppButton';
 import Colors from '@/constants/Colors';

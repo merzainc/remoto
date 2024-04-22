@@ -52,9 +52,6 @@ async function registerForPushNotificationsAsync() {
       handleRegistrationError(
         'Permission not granted to get push token for push notification!'
       );
-      logger.logMessage(
-        'Permission not granted to get push token for push notification!'
-      );
       return;
     }
     const projectId =
@@ -72,8 +69,6 @@ async function registerForPushNotificationsAsync() {
       logger.logMessage('Token assigned: ' + pushTokenString);
       return pushTokenString;
     } catch (e: unknown) {
-      //@ts-ignore
-      logger.log(new Error(e.message + 'Failed token retrieval'));
       handleRegistrationError(`${e}`);
     }
   } else {
@@ -120,8 +115,6 @@ function App() {
       responseListener.current &&
         Notifications.removeNotificationSubscription(responseListener.current);
     };
-
-    logger.logMessage('App started');
   }, []);
 
   return (
