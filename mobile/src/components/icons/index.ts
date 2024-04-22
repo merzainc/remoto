@@ -1,20 +1,12 @@
 import ActivityIcon from './ActivityIcon';
-import {
-  FlashLightOff,
-  BellIcon,
-  BriefCaseIcon,
-  CogIcon,
-  HomeIcon,
-  FlashLightOn,
-} from './Icons';
+import { BellIcon, TaskIcon, CogIcon, HomeIcon, FlashLightOn } from './Icons';
 import TasksIcon from './TasksIcon';
 import MailIcon from './MailIcon';
 export {
   ActivityIcon,
   TasksIcon,
-  FlashLightOff,
   BellIcon,
-  BriefCaseIcon,
+  TaskIcon,
   CogIcon,
   HomeIcon,
   FlashLightOn,

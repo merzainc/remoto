@@ -233,7 +233,7 @@ TaskManager.defineTask(
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Remoto Geofencing',
-        body: `You have move ${stateString} the indentifier region`,
+        body: `You have moved ${stateString} the default region`,
         data: region,
       },
       trigger: null,

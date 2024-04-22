@@ -1,35 +1,55 @@
-import Colors from '@/constants/Colors';
-import { Row, Spacer, Text, View } from 'expo-dev-client-components';
+import {
+  Row,
+  Spacer,
+  Text,
+  useExpoTheme,
+  View,
+} from 'expo-dev-client-components';
 import React, { ReactNode } from 'react';
-import { Switch } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
-  onToggleSwitch?: () => void;
+  onPress?: () => void;
   icon?: ReactNode;
   title: string;
   checked?: boolean;
 };
 
-export function RadioListItem({ onToggleSwitch, icon, title, checked }: Props) {
+export function RadioListItem({ onPress, icon, title, checked }: Props) {
+  const theme = useExpoTheme();
+
   return (
-    <Row align='center' justify='between' bg='default' padding='small'>
-      <Row align='center'>
-        {icon}
-        {icon ? <Spacer.Horizontal size='small' /> : null}
-        <Text size='medium' type='InterRegular' style={{ color: Colors.black }}>
-          {title}
-        </Text>
+    <TouchableOpacity disabled={!onPress} onPress={onPress}>
+      <Row align='center' justify='between' bg='default' padding='small'>
+        <Row align='center'>
+          {icon}
+          {icon ? <Spacer.Horizontal size='small' /> : null}
+          <Text size='medium' type='InterRegular'>
+            {title}
+          </Text>
+        </Row>
+        <View
+          style={{
+            height: 20,
+            width: 20,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: theme.icon.secondary,
+          }}
+          align='centered'
+        >
+          {checked ? (
+            <View
+              style={{
+                height: 12,
+                width: 12,
+                borderRadius: 10,
+                backgroundColor: theme.icon.default,
+              }}
+            />
+          ) : null}
+        </View>
       </Row>
-      <View
-        style={{ width: 15, height: 15, paddingRight: 12 }}
-        align='centered'
-      >
-        <Switch
-          value={checked}
-          onValueChange={onToggleSwitch}
-          color={Colors.primary}
-        />
-      </View>
-    </Row>
+    </TouchableOpacity>
   );
 }

@@ -4,7 +4,7 @@
     "slug": "remoto",
     "version": "1.0.15",
     "orientation": "portrait",
-    "icon": "./assets/icon-white.png",
+    "icon": "./assets/icon.png",
     "platforms": ["ios", "android"],
     "description": "Remotely monitor your security team activites from anywhere.",
     "splash": {
@@ -15,7 +15,6 @@
     "assetBundlePatterns": ["**/*"],
     "notification": {
       "icon": "./assets/logo-dark.png",
-      "color": "#000000",
       "iosDisplayInForeground": true
     },
     "ios": {
@@ -92,6 +91,12 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "da44510c-2d12-457d-b786-028857f414f5"
+      }
+    },
+    "owner": "ratcatcher"
   }
 }

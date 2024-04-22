@@ -1,7 +1,7 @@
 import useAuth from '@/auth/useAuth';
-import { IconListItem, ListItem, RadioListItem } from '@/components/list';
-import WithFeedback from '@/components/WithFeedback';
-import Colors from '@/constants/Colors';
+import { Button } from '@/components/Button';
+import { ListItem } from '@/components/list';
+import { SectionHeader } from '@/components/SectionHeader';
 import {
   CheckIcon,
   iconSize,
@@ -9,23 +9,19 @@ import {
   palette,
   spacing,
 } from '@expo/styleguide-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 import {
   Divider,
-  Heading,
   Image,
   Row,
   Spacer,
   Text,
   View,
 } from 'expo-dev-client-components';
-import { useState } from 'react';
-import { Alert, Linking, StyleSheet } from 'react-native';
+import * as Device from 'expo-device';
+import { Alert } from 'react-native';
 
 export default function SettingScreen() {
   const { user, logOut } = useAuth();
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
-  const [isBackgroundOn, setIsBackgroundOn] = useState(true);
 
   const handleDistanceUnits = () => {
     Alert.alert('Distance unit');
@@ -37,216 +33,111 @@ export default function SettingScreen() {
   return (
     <View
       flex='1'
+      px='medium'
       style={{
-        backgroundColor: Colors.bgBody,
+        backgroundColor: lightTheme.background.secondary,
       }}
     >
-      <View
-        bg='default'
-        shadow='micro'
-        style={{
-          borderBottomColor: lightTheme.border.default,
-          borderBottomWidth: 0.5,
-        }}
-      >
-        <Row px='medium' py='small' align='center'>
-          <Heading
-            style={{
-              marginRight: spacing[2],
-              fontSize: 14,
-              color: Colors.primary,
-            }}
-            type='InterMedium'
+      <View>
+        <SectionHeader header='Account' />
+        <View pb='small'>
+          <Row
+            justify='between'
+            align='center'
+            border='default'
+            rounded='medium'
+            padding='1.5'
+            bg='default'
           >
-            Account
-          </Heading>
-        </Row>
-        <View px='medium' bg='default'>
-          <View rounded='large' bg='default' mb='small'>
-            <Row
-              justify='between'
-              align='center'
-              border='default'
-              rounded='medium'
-              padding='1.5'
-            >
-              <Row align='start'>
-                <Image
-                  size='xl'
-                  rounded='full'
-                  source={{
-                    uri: 'https://lh3.googleusercontent.com/a/ACg8ocLIZIJU1N_f6fxFMM8ECAZ1vd9H_dMgIuN7D43NMBRYbH8=s96-c',
-                  }}
-                />
-                <Spacer.Horizontal size='small' />
-                <View>
-                  <Text
-                    type='InterBold'
-                    style={{ paddingRight: spacing[4] }}
-                    numberOfLines={1}
-                  >
-                    {user?.name}
-                  </Text>
-                  <Spacer.Vertical size='micro' />
-                  <Text
-                    style={{ paddingRight: spacing[4] }}
-                    color='secondary'
-                    type='InterRegular'
-                    numberOfLines={1}
-                    size='small'
-                  >
-                    {user?.force}
-                  </Text>
-                </View>
-              </Row>
-              <CheckIcon
-                color={palette.light.green[500]}
-                size={iconSize.large}
+            <Row align='start'>
+              <Image
+                size='xl'
+                rounded='full'
+                source={require('../../assets/avatar.png')}
               />
+              <Spacer.Horizontal size='small' />
+              <View>
+                <Text
+                  type='InterBold'
+                  style={{ paddingRight: spacing[4] }}
+                  numberOfLines={1}
+                >
+                  {user?.name}
+                </Text>
+                <Spacer.Vertical size='micro' />
+                <Text
+                  style={{ paddingRight: spacing[4] }}
+                  color='secondary'
+                  type='InterRegular'
+                  numberOfLines={1}
+                  size='small'
+                >
+                  {user?.force}
+                </Text>
+              </View>
             </Row>
-          </View>
-          <WithFeedback
-            style={{ paddingVertical: 10 }}
-            onPress={() => logOut()}
-          >
-            End Shift
-          </WithFeedback>
-          <Spacer.Vertical size='small' />
+            <CheckIcon color={palette.light.green[500]} size={iconSize.large} />
+          </Row>
         </View>
+        <Button
+          label='End Shift'
+          style={{ alignItems: 'center' }}
+          onPress={() => logOut()}
+        />
       </View>
-      <View py='small' px='medium'>
-        <Text
-          style={{ fontSize: 14, color: Colors.textColor }}
-          type='InterRegular'
-        >
-          Please consider signing out once your shift ends to stop all tracking
-          activities and preserve battery life.
-        </Text>
-      </View>
-
-      <View bg='default' style={styles.container}>
-        <Row px='medium' pt='small' align='center'>
-          <Heading
-            style={{
-              marginRight: spacing[2],
-              fontSize: 14,
-              color: Colors.primary,
-            }}
-            type='InterMedium'
-          >
-            Settings
-          </Heading>
-        </Row>
-        <View>
+      <Spacer.Vertical size='medium' />
+      <View>
+        <SectionHeader header='Settings' />
+        <View bg='default' border='default' overflow='hidden' rounded='large'>
           <ListItem
             title='Map Preview Provider'
-            style={{ color: Colors.primary }}
             value='Google'
             onPress={changeMapProvider}
           />
-          <View px='medium'>
-            <Divider style={{ height: 0.8 }} />
-          </View>
-          <RadioListItem
-            title='Shift Reminders'
-            checked={isSwitchOn}
-            onToggleSwitch={() => setIsSwitchOn(!isSwitchOn)}
-          />
-          <View px='medium'>
-            <Divider style={{ height: 0.8 }} />
-          </View>
+          <Divider style={{ height: 1 }} />
           <ListItem
             title='Distance Unit'
-            value='Automatic'
-            onPress={handleDistanceUnits}
+            value='Kilometer'
+            onPress={() => handleDistanceUnits()}
           />
-          <View px='medium'>
-            <Divider style={{ height: 0.8 }} />
-          </View>
-          <RadioListItem
-            title='Background Connection'
-            checked={isBackgroundOn}
-            onToggleSwitch={() => setIsBackgroundOn(!isBackgroundOn)}
-          />
+          <Divider style={{ height: 1 }} />
+          <ListItem title='Background Connection' value='On' />
+        </View>
+        <View py='small' px='medium'>
+          <Text style={{ fontSize: 14 }} color='secondary' type='InterRegular'>
+            To update all settings across all screens, pull to refresh.
+          </Text>
         </View>
       </View>
-      <Spacer.Vertical size='xl' />
-      <View bg='default' style={styles.container}>
-        <Row px='medium' pt='small' align='center'>
-          <Heading
-            style={{
-              marginRight: spacing[2],
-              fontSize: 14,
-              color: Colors.primary,
-            }}
-            type='InterMedium'
-          >
-            Help
-          </Heading>
-        </Row>
-        <View>
-          <IconListItem
-            onPress={() => Linking.openURL('mailto:ternalify@gmail.com')}
-            title='Ask a Question'
-            icon={
-              <Ionicons
-                name='chatbubble-ellipses-outline'
-                size={24}
-                color={lightTheme.icon.default}
-              />
-            }
+      <View>
+        <SectionHeader header='App Info' />
+        <View bg='default' border='default' overflow='hidden' rounded='large'>
+          <ConstantItem
+            title='Device ID'
+            value={Device.modelName ? Device.modelName : 'MN-H2718X'}
           />
-          <View px='medium'>
-            <Divider style={{ height: 0.8 }} />
-          </View>
-          <IconListItem
-            title='Remoto FAQ'
-            icon={
-              <AntDesign
-                name='questioncircleo'
-                size={24}
-                color={lightTheme.icon.default}
-              />
-            }
-          />
-          <View px='medium'>
-            <Divider style={{ height: 0.8 }} />
-          </View>
-          <IconListItem
-            onPress={() =>
-              Linking.openURL('https://remoto-alpha.vercel.app/p/privacy')
-            }
-            title='Privacy Policy'
-            icon={
-              <Ionicons
-                name='shield-checkmark-outline'
-                size={24}
-                color={lightTheme.icon.default}
-              />
-            }
-          />
+          <Divider style={{ height: 1 }} />
+          <ConstantItem title='Build Number' value='598367a' />
+          <Divider style={{ height: 1 }} />
+          <ConstantItem title='App Version' value='v1.14' />
+          <Divider style={{ height: 1 }} />
+          <ConstantItem title='Supported SDK' value='50.0.0' />
         </View>
-      </View>
-      <View py='small' px='medium'>
-        <Text
-          style={{ color: Colors.textColor, fontSize: 14 }}
-          type='InterRegular'
-        >
-          Remoto for Android v1.0.20 (7792d0b) store bundled arm64-v8a.
-        </Text>
+        <View py='small' px='medium'>
+          <Text style={{ fontSize: 14 }} color='secondary' type='InterRegular'>
+            Remoto for Android v1.14 (598367a) store bundled arm64-v8a
+          </Text>
+        </View>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    borderColor: Colors.borderColor,
-    borderTopWidth: 0.5,
-    borderWidth: 0.5,
-    shadowColor: '#000',
-    shadowRadius: 10,
-    shadowOpacity: 0.15,
-    elevation: 0.6,
-  },
-});
+function ConstantItem({ title, value }: { title: string; value: string }) {
+  return (
+    <Row justify='between' align='center' padding='medium'>
+      <Text type='InterRegular'>{title}</Text>
+      <Text type='InterRegular'>{value}</Text>
+    </Row>
+  );
+}

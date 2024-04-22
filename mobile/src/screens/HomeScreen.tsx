@@ -92,7 +92,7 @@ TaskManager.defineTask(
         longitude: coords.longitude,
       }));
 
-      console.log(`Received new locations at ${new Date()}: ${locations}`);
+      console.log(`New locations ${new Date()}: ${locations}`);
 
       savedLocations.push(...newLocations);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
