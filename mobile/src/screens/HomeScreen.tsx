@@ -15,6 +15,7 @@ import Colors from '@/constants/Colors';
 import mapStyles from '@/constants/MapStyles';
 import usePermissions from '@/hooks/usePermissions';
 import logger from '@/utility/logger';
+import { lightTheme } from '@expo/styleguide-native';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -436,7 +437,7 @@ const PermissionsModal = () => {
           flex: 1,
           justifyContent: 'space-around',
           alignItems: 'center',
-          backgroundColor: Colors.bgBody,
+          backgroundColor: lightTheme.background.screen,
         }}
       >
         <View
@@ -533,6 +534,6 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.7)',
     margin: 20,
   },
-  modalHeader: { padding: 8, fontSize: 20, fontWeight: '800' },
-  modalText: { padding: 8, fontWeight: '600', color: Colors.textColor },
+  modalHeader: { fontSize: 17, fontWeight: '600' },
+  modalText: { padding: 8, fontWeight: '600', color: lightTheme.text.default },
 });
