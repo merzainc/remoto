@@ -87,7 +87,7 @@ TaskManager.defineTask(
         longitude: coords.longitude,
       }));
 
-      console.log(`New locations ${new Date()}: ${locations}`);
+      // console.log(`New locations ${new Date()}: ${locations}`);
 
       savedLocations.push(...newLocations);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(savedLocations));
@@ -161,7 +161,7 @@ function BackgroundLocationMapView() {
       );
 
       if (!isTracking) {
-        alert('Click `Start tracking` to start getting location updates.');
+        //click start to get location updates
       }
 
       if (!isMounted) return;
@@ -191,11 +191,12 @@ function BackgroundLocationMapView() {
     Location.watchPositionAsync(
       {
         accuracy: Location.LocationAccuracy.Highest,
-        timeInterval: 6000, // 1 minute
-        distanceInterval: 1,
+        timeInterval: 20 * 1000, // 1 minute
+        distanceInterval: 0.2,
       },
       (response) => {
         setLocation(response);
+        console.log(response);
         mapViewRef.current?.animateCamera(
           {
             pitch: 50,
@@ -212,7 +213,7 @@ function BackgroundLocationMapView() {
       if (
         (await Location.getBackgroundPermissionsAsync()).status !== 'granted'
       ) {
-        logger.logMessage(
+        alert(
           'Missing background location permissions. Make sure it is granted in the OS Settings.'
         );
         return;
@@ -341,7 +342,6 @@ function BackgroundLocationMapView() {
           customMapStyle={mapStyles}
           ref={mapViewRef}
           style={styles.mapView}
-          showsCompass={false}
           zoomControlEnabled
           provider={PROVIDER_GOOGLE}
           initialRegion={{
@@ -369,18 +369,6 @@ function BackgroundLocationMapView() {
         <View style={styles.topButtons}>
           <View style={styles.buttonsColumn}>
             {Platform.OS === 'android' ? null : (
-              <Button style={styles.button} onPress={toggleLocationIndicator}>
-                <View style={styles.buttonContentWrapper}>
-                  <Text style={styles.text}>
-                    {state.showsBackgroundLocationIndicator ? 'Hide' : 'Show'}
-                  </Text>
-                  <Text style={styles.text}> background </Text>
-                  <FontAwesome name='location-arrow' size={20} color='white' />
-                  <Text style={styles.text}> indicator</Text>
-                </View>
-              </Button>
-            )}
-            {Platform.OS === 'android' ? null : (
               <Button
                 style={styles.button}
                 onPress={toggleActivityType}
@@ -392,11 +380,11 @@ function BackgroundLocationMapView() {
               />
             )}
           </View>
-          <View style={styles.buttonsColumn}>
+          {/* <View style={styles.buttonsColumn}>
             <Button style={styles.button} onPress={onCenterMap}>
               <MaterialIcons name='my-location' size={20} color='white' />
             </Button>
-          </View>
+          </View> */}
         </View>
 
         <View style={styles.bottomButtons}>
@@ -443,9 +431,7 @@ const PermissionsModal = () => {
         <View
           style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}
         >
-          <Text style={styles.modalHeader}>
-            Permissions required to proceed
-          </Text>
+          <Text style={styles.modalText}>Permissions required to proceed</Text>
 
           <Text style={styles.modalText}>
             This app collects location data to enable updating the control
@@ -535,5 +521,10 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   modalHeader: { fontSize: 17, fontWeight: '600' },
-  modalText: { padding: 8, fontWeight: '600', color: lightTheme.text.default },
+  modalText: {
+    padding: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: lightTheme.text.default,
+  },
 });

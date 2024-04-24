@@ -4,7 +4,12 @@ import ActivityScreen from '@/screens/ActivityScreen';
 import HomeScreen from '@/screens/HomeScreen';
 import SettingsScreen from '@/screens/SettingsScreen';
 import TasksScreen from '@/screens/TasksScreen';
-import { ArrowLeftIcon, lightTheme, palette } from '@expo/styleguide-native';
+import {
+  ArrowLeftIcon,
+  lightTheme,
+  palette,
+  SearchIcon,
+} from '@expo/styleguide-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as React from 'react';
 import { Platform } from 'react-native';
@@ -47,7 +52,7 @@ export default function AppNavigator() {
                   navigationRef.navigate('Activity');
                 }}
               >
-                <ActivityBoxIcon color={palette.light.white} />
+                <SearchIcon size={20} color={palette.light.white} />
               </TouchableOpacity>
             );
           },
