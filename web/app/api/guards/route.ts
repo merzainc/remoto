@@ -2,6 +2,8 @@ import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { NextRequest, NextResponse } from 'next/server';
 import z from 'zod';
+import { doc, GeoPoint, setDoc, Timestamp } from 'firebase/firestore';
+import dbFire from '@/config/firebase';
 
 const GuardSchema = z.object({
   name: z
@@ -53,6 +55,16 @@ export async function POST(request: NextRequest) {
         force: body.force,
         password: hashed_password,
         phone: body.phone,
+      },
+    });
+
+    await setDoc(doc(dbFire, 'positions', guard.force), {
+      name: guard.name,
+      signedIn: false,
+      location: new GeoPoint(0, 0),
+      battery: {
+        level: 'UNKNOWN',
+        status: 'UNKNOWN',
       },
     });
 
