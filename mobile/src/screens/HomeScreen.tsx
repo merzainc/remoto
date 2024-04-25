@@ -1,24 +1,21 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { Text, View } from 'expo-dev-client-components';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import { EventEmitter, EventSubscription } from 'fbemitter';
+import { doc, GeoPoint, updateDoc } from 'firebase/firestore';
 import * as React from 'react';
 import { Modal, Platform, StyleSheet } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { doc, GeoPoint, updateDoc } from 'firebase/firestore';
 
+import useAuth from '@/auth/useAuth';
 import Button from '@/components/AppButton';
-import Colors from '@/constants/Colors';
+import db from '@/config/firebase';
 import mapStyles from '@/constants/MapStyles';
 import usePermissions from '@/hooks/usePermissions';
 import logger from '@/utility/logger';
 import { lightTheme } from '@expo/styleguide-native';
-import db from '@/config/firebase';
-import useAuth from '@/auth/useAuth';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -200,7 +197,7 @@ function BackgroundLocationMapView() {
       },
       (response) => {
         setLocation(response);
-        console.log(response);
+
         const positionsRef = doc(db, 'positions', user?.force as string);
         updateDoc(positionsRef, {
           name: user?.name,
@@ -214,7 +211,7 @@ function BackgroundLocationMapView() {
           },
         })
           .then((res) => {
-            console.log('Send to db!');
+            logger.logMessage('Send to db');
           })
           .catch((err) => console.error(err));
         mapViewRef.current?.animateCamera(
