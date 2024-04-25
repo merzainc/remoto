@@ -5,14 +5,19 @@
     "version": "1.0.14",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "description": "Remotely monitor your security team activites from anywhere.",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#3390EC"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "notification": {
       "icon": "./assets/logo-dark.png",
       "iosDisplayInForeground": true
@@ -20,7 +25,11 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"],
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ],
         "NSCameraUsageDescription": "This app uses the camera to take images for patrol activites."
       }
     },
@@ -94,7 +103,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "da44510c-2d12-457d-b786-028857f414f5"
+        "projectId": "f87ec9b2-86ba-47c0-a864-e534c89444c6"
       }
     },
     "owner": "ratcatcher"

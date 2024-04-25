@@ -6,6 +6,7 @@ const defaultConfig = getDefaultConfig(__dirname);
 
 // Add 'cjs' to sourceExts
 defaultConfig.resolver.sourceExts.push('cjs');
+defaultConfig.resolver.assetExts.push('db');
 
 // Get Sentry Expo config
 const sentryConfig = getSentryExpoConfig(__dirname);

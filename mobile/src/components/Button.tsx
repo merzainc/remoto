@@ -9,7 +9,13 @@ import React from 'react';
 import { ActivityIndicator, TouchableOpacity, ViewStyle } from 'react-native';
 import Colors from '../constants/Colors';
 
-type Theme = 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'error';
+type Theme =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'ghost'
+  | 'error'
+  | 'success';
 
 type Props = {
   label: string;
@@ -57,6 +63,13 @@ function getThemeColors(
         backgroundColor: expoTheme.background.error,
         color: expoTheme.text.error,
         borderColor: expoTheme.border.error,
+        borderWidth: 1,
+      };
+    case 'success':
+      return {
+        backgroundColor: expoTheme.background.success,
+        color: expoTheme.text.success,
+        borderColor: expoTheme.border.success,
         borderWidth: 1,
       };
   }

@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/react-native';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import * as SQLite from 'expo-sqlite';
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -87,12 +88,28 @@ const theme = {
 };
 
 function App() {
+  const db = SQLite.openDatabase('remoto');
+
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState<
     Notifications.Notification | undefined
   >(undefined);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
+
+  useEffect(() => {
+    db.transaction((tx: any) => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS activities (id INTEGER PRIMARY KEY AUTOINCREMENT, start TEXT, end TEXT, distance INTEGER)'
+      );
+    });
+
+    db.transaction((tx: any) => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS points (id INTEGER PRIMARY KEY AUTOINCREMENT, num INTEGER, longitude REAL, latitude REAL, activity_id INTEGER, FOREIGN KEY(activity_id) REFERENCES activities(id))'
+      );
+    });
+  }, []);
 
   useEffect(() => {
     registerForPushNotificationsAsync()
