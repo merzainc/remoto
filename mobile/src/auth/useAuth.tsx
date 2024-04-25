@@ -10,15 +10,15 @@ export default function useAuth() {
   const logIn = (authToken: User) => {
     setUser(authToken);
     authStorage.storeToken(authToken);
-    const positionsRef = doc(db, 'positions', user?.force as string);
+    const positionsRef = doc(db, 'positions', authToken?.force as string);
     updateDoc(positionsRef, {
+      signedIn: true,
       name: authToken.name,
       location: new GeoPoint(0, 0),
       battery: {
         status: 'UNKNOWN',
         level: 'UNKNOWN',
       },
-      signedIn: true,
     })
       .then((res) => {
         console.log('Started shift!');
@@ -31,6 +31,7 @@ export default function useAuth() {
     const positionsRef = doc(db, 'positions', user?.force as string);
     updateDoc(positionsRef, {
       name: user?.name,
+
       location: new GeoPoint(0, 0),
       battery: {
         status: 'UNKNOWN',
