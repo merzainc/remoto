@@ -9,6 +9,7 @@ import { EventEmitter, EventSubscription } from 'fbemitter';
 import * as React from 'react';
 import { Modal, Platform, StyleSheet } from 'react-native';
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { doc, GeoPoint, updateDoc } from 'firebase/firestore';
 
 import Button from '@/components/AppButton';
 import Colors from '@/constants/Colors';
@@ -16,6 +17,8 @@ import mapStyles from '@/constants/MapStyles';
 import usePermissions from '@/hooks/usePermissions';
 import logger from '@/utility/logger';
 import { lightTheme } from '@expo/styleguide-native';
+import db from '@/config/firebase';
+import useAuth from '@/auth/useAuth';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -132,6 +135,7 @@ function BackgroundLocationMapView() {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const [location, setLocation] =
     React.useState<Location.LocationObject | null>(null);
+  const { user } = useAuth();
 
   const onFocus = React.useCallback(() => {
     let subscription: EventSubscription | null = null;
@@ -191,12 +195,28 @@ function BackgroundLocationMapView() {
     Location.watchPositionAsync(
       {
         accuracy: Location.LocationAccuracy.Highest,
-        timeInterval: 20 * 1000, // 1 minute
-        distanceInterval: 0.2,
+        timeInterval: 10 * 1000, // 1 minute
+        distanceInterval: 0.1,
       },
       (response) => {
         setLocation(response);
         console.log(response);
+        const positionsRef = doc(db, 'positions', user?.force as string);
+        updateDoc(positionsRef, {
+          name: user?.name,
+          location: new GeoPoint(
+            response.coords.latitude,
+            response.coords.longitude
+          ),
+          battery: {
+            status: 'CHARGING',
+            level: '87%',
+          },
+        })
+          .then((res) => {
+            console.log('Send to db!');
+          })
+          .catch((err) => console.error(err));
         mapViewRef.current?.animateCamera(
           {
             pitch: 50,
