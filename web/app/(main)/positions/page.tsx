@@ -1,17 +1,14 @@
 'use client';
 import mapStyles from '@/components/mapStyles';
-import { GoogleMap, MarkerF, useJsApiLoader } from '@react-google-maps/api';
-import React from 'react';
-import {
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-  Timestamp,
-  where,
-} from 'firebase/firestore';
 import db from '@/config/firebase';
+import {
+  GoogleMap,
+  InfoWindow,
+  MarkerF,
+  useJsApiLoader,
+} from '@react-google-maps/api';
+import { collection, onSnapshot } from 'firebase/firestore';
+import React, { useState } from 'react';
 
 const containerStyle = {
   width: '100%',
@@ -44,13 +41,31 @@ const points = [
   },
 ];
 
+interface Point {
+  _lat: number;
+  _long: number;
+}
+
+interface Battery {
+  level: string;
+  status: string;
+}
+
+interface Position {
+  id: string;
+  name: string;
+  location: Point;
+  battery: Battery;
+}
+
 export default function LivePositions() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY!,
   });
   const [map, setMap] = React.useState(null);
-  const [userLocations, setUserLocations] = React.useState([]);
+  const [guardPositions, setGuardPositions] = React.useState<Position[]>([]);
+  const [selectedMarker, setSelectedMarker] = useState<Position>();
 
   const onLoad = React.useCallback(function callback(map: any) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
@@ -65,26 +80,25 @@ export default function LivePositions() {
   }, []);
 
   React.useEffect(() => {
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
-
-    const unsubscribe = onSnapshot(
-      query(
-        collection(db, 'positions'),
-        where('timestamp', '>=', Timestamp.fromDate(startOfToday)),
-        where('timestamp', '<=', Timestamp.fromDate(endOfToday))
-      ),
-      (snapshot) => {
-        console.log('Executed!');
-        const updatedUserLocations = snapshot.docs.map((doc) => doc.data());
-        console.log(updatedUserLocations);
-        //@ts-ignore
-        setUserLocations(updatedUserLocations);
-      }
-    );
-
+    const unsubscribe = onSnapshot(collection(db, 'positions'), (snapshot) => {
+      //@ts-ignore
+      const positions = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.signedIn) {
+          positions.push({
+            id: doc.id,
+            name: data.name,
+            location: data.location,
+            battery: data.battery,
+          });
+        }
+      });
+      //@ts-ignore
+      console.log(positions);
+      //@ts-ignore
+      setGuardPositions(positions);
+    });
     return () => unsubscribe();
   }, []);
 
@@ -108,8 +122,33 @@ export default function LivePositions() {
               styles: mapStyles,
             }}
           >
-            {points.map((point, index) => (
-              <MarkerF key={index} position={point}></MarkerF>
+            {guardPositions.map((point, index) => (
+              <MarkerF
+                key={index}
+                position={{
+                  lat: point.location._lat,
+                  lng: point.location._long,
+                }}
+                onClick={() => setSelectedMarker(point)}
+              >
+                {selectedMarker === point && (
+                  <InfoWindow
+                    position={{
+                      lat: point.location._lat,
+                      lng: point.location._long,
+                    }}
+                    //@ts-ignore
+                    onCloseClick={() => setSelectedMarker(null)}
+                  >
+                    <div>
+                      <h3>{point.name}</h3>
+                      <p>{`Force Number: ${point.id}`}</p>
+                      <p>{`Battery Level: ${point.battery.level}`}</p>
+                      <p>{`Battery Status: ${point.battery.status}`}</p>
+                    </div>
+                  </InfoWindow>
+                )}
+              </MarkerF>
             ))}
             <></>
           </GoogleMap>
