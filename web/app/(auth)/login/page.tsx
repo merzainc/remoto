@@ -1,7 +1,11 @@
+'use client';
+import { Icons } from '@/components/icons';
 import { Input } from '@/components/ui/Form';
-import { Button } from '@/components/';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 export default function LoginPage() {
+  const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
   return (
     <div className='min-h-dvh bg-screen'>
       <div className='mx-auto w-full max-w-[688px] px-6 max-sm-gutters:p-0 pt-28 max-md-gutters:pt-16 max-sm-gutters:pt-12'>
@@ -11,8 +15,7 @@ export default function LoginPage() {
         <div className='border border-secondary bg-default rounded-lg shadow-sm max-sm-gutters:rounded-none max-sm-gutters:border-x-0 max-sm-gutters:shadow-none'>
           <div className='p-6'>
             <form
-              action='/form-error'
-              method='post'
+              onSubmit={() => {}}
               className='flex flex-col rounded-lg shadow-none gap-4'
             >
               <div className='flex-1'>
@@ -72,33 +75,39 @@ export default function LoginPage() {
                 <span className='absolute left-0 top-[50%] h-[1px] w-full bg-palette-gray6' />
                 <span className='relative z-10 bg-default px-2'>or</span>
               </p>
-              <a
+              <button
                 className='inline-flex border border-solid rounded-md font-medium gap-2 items-center whitespace-nowrap transition h-11 px-6 text-base border-button-secondary bg-button-secondary text-button-secondary shadow-xs hocus:bg-button-secondary-hover active:scale-98 justify-center'
                 type='button'
-                href='/sso-login'
+                onClick={() => {
+                  setIsGoogleLoading(true);
+                  signIn('google');
+                }}
               >
                 <span className='flex self-center text-inherit leading-none select-none'>
                   Continue with SSO
                 </span>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                  className='icon-md text-button-secondary-icon'
-                  role='img'
-                >
-                  <g id='arrow-right-outline-icon'>
-                    <path
-                      id='Icon'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M5 12H19M19 12L12 5M19 12L12 19'
-                    />
-                  </g>
-                </svg>
-              </a>
+                {isGoogleLoading ? (
+                  <Icons.spinner className='icon-md text-button-secondary-icon' />
+                ) : (
+                  <svg
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                    className='icon-md text-button-secondary-icon'
+                    role='img'
+                  >
+                    <g id='arrow-right-outline-icon'>
+                      <path
+                        id='Icon'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M5 12H19M19 12L12 5M19 12L12 19'
+                      />
+                    </g>
+                  </svg>
+                )}
+              </button>
             </form>
           </div>
         </div>
