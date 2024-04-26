@@ -1,36 +1,30 @@
+//@ts-nocheck
 import { Button } from '@/components';
 import { PlusIcon } from '@expo/styleguide-icons';
+import { Metadata } from 'next';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 
-const people = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    email: 'walton@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'Mataga Ralph',
-    title: 'Front-end Developer',
-    email: 'ralph@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'Yolanda Musiwa',
-    title: 'Front-end Developer',
-    email: 'marema@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'Lisa Madenga',
-    title: 'Front-end Developer',
-    email: 'lisa@example.com',
-    role: 'Member',
-  },
-  // More people...
-];
+async function getGuards() {
+  const res = await fetch('https://remoto-alpha.vercel.app/api/guards');
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
 
-export default function GuardsPage() {
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json();
+}
+
+export const metadata: Metadata = {
+  title: 'Guards - Remoto',
+  description:
+    ' View  and manage all of the security teams associated with your account. ',
+};
+
+export default async function GuardsPage() {
+  const guards = await getGuards();
   return (
     <>
       <div className='flex items-center justify-between gap-3 max-md-gutters:flex-col max-md-gutters:items-start'>
@@ -42,7 +36,8 @@ export default function GuardsPage() {
             </h1>
           </div>
           <p className='font-normal text-[15px] leading-[1.5715] tracking-[-0.006rem] text-secondary'>
-            View all of the geofences associated with your account.
+            View and manage all of the security teams associated with your
+            account.
           </p>
         </div>
         <div className='justify-self-end'>
@@ -89,27 +84,27 @@ export default function GuardsPage() {
                 </tr>
               </thead>
               <tbody className='bg-default'>
-                {people.map((person, personIdx) => (
+                {guards.map((person, personIdx) => (
                   <tr
                     key={person.email}
                     className={personIdx % 2 === 0 ? undefined : 'bg-[#f9fafb]'}
                   >
                     <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-default sm:pl-3'>
+                      {person.force}
+                    </td>
+                    <td className='whitespace-nowrap px-3 py-4 text-sm text-default'>
                       {person.name}
                     </td>
                     <td className='whitespace-nowrap px-3 py-4 text-sm text-default'>
-                      {person.title}
+                      N/A
                     </td>
                     <td className='whitespace-nowrap px-3 py-4 text-sm text-default'>
-                      {person.email}
-                    </td>
-                    <td className='whitespace-nowrap px-3 py-4 text-sm text-default'>
-                      {person.role}
+                      {person.phone}
                     </td>
                     <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3'>
                       <a
                         href='#'
-                        className='text-palette-blue9 hover:text-palette-blue10'
+                        className='text-palette-red9 hover:text-palette-red10'
                       >
                         Edit<span className='sr-only'>, {person.name}</span>
                       </a>
