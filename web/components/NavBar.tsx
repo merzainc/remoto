@@ -3,6 +3,7 @@ import { Button } from '@/components';
 import { ChevronRightIcon, Menu01Icon } from '@expo/styleguide-icons';
 import { Icons } from './icons';
 import { Avatar } from './ui/avatar';
+import UserNav from './UserNav';
 
 export default function NavBar() {
   return (
@@ -45,10 +46,7 @@ export default function NavBar() {
           </span>
         </button>
 
-        <Avatar
-          src='https://images.unsplash.com/photo-1595211877493-41a4e5f236b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80'
-          className='size-8 !hidden lg:!inline-block'
-        />
+        <UserNav />
 
         <Button theme='quaternary' className='lg:hidden'>
           <span className='flex self-center text-inherit leading-none'>
