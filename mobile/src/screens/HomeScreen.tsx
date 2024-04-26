@@ -16,6 +16,7 @@ import mapStyles from '@/constants/MapStyles';
 import usePermissions from '@/hooks/usePermissions';
 import logger from '@/utility/logger';
 import { lightTheme } from '@expo/styleguide-native';
+import { useBatteryLevel } from 'expo-battery';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -133,6 +134,7 @@ function BackgroundLocationMapView() {
   const [location, setLocation] =
     React.useState<Location.LocationObject | null>(null);
   const { user } = useAuth();
+  const batteryLevel = useBatteryLevel();
 
   const onFocus = React.useCallback(() => {
     let subscription: EventSubscription | null = null;
@@ -207,7 +209,7 @@ function BackgroundLocationMapView() {
           ),
           battery: {
             status: 'CHARGING',
-            level: '87%',
+            level: batteryLevel,
           },
         })
           .then((res) => {
