@@ -86,7 +86,7 @@ export default async function GuardsPage() {
               <tbody className='bg-default'>
                 {guards.map((person, personIdx) => (
                   <tr
-                    key={person.email}
+                    key={person.force}
                     className={personIdx % 2 === 0 ? undefined : 'bg-[#f9fafb]'}
                   >
                     <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-default sm:pl-3'>
