@@ -72,7 +72,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenu.Item
     ref={ref}
     className={mergeClasses(
-      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm text-default outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hocus:bg-hover hocus:text-[#0F172A]',
+      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm font-medium text-default outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hocus:bg-hover hocus:text-[#0F172A]',
       inset && 'pl-8',
       className
     )}

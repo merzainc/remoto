@@ -15,7 +15,7 @@ export default function MobileUserNav() {
       className='relative'
       trigger={
         <AvatarButton
-          className='size-6 lg:hidden'
+          className='size-7 lg:hidden'
           src={status === 'loading' ? null : session?.user?.image}
         />
       }
