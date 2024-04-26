@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import { Button } from '@/components';
 import { ChevronRightIcon, Menu01Icon } from '@expo/styleguide-icons';
+import Link from 'next/link';
 import { Icons } from './icons';
-import { Avatar } from './ui/avatar';
+import MobileUserNav from './MobileUserNav';
 import UserNav from './UserNav';
 
 export default function NavBar() {
@@ -13,10 +13,7 @@ export default function NavBar() {
           <Icons.logo className='size-6' />
           <span className='inline-block font-bold'>Remoto</span>
           <ChevronRightIcon className='size-4 lg:hidden text-icon-default' />
-          <Avatar
-            src='https://images.unsplash.com/photo-1595211877493-41a4e5f236b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80'
-            className='size-6 lg:hidden'
-          />
+          <MobileUserNav />
         </Link>
       </div>
       <div className='flex items-center gap-2 lg:gap-4 justify-end'>

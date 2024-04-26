@@ -8,14 +8,14 @@ import {
 import { useSession } from 'next-auth/react';
 import { AvatarButton } from './ui/avatar';
 
-export default function UserNav() {
+export default function MobileUserNav() {
   const { data: session, status } = useSession();
   return (
     <Dropdown
       className='relative'
       trigger={
         <AvatarButton
-          className='hidden size-8 lg:flex'
+          className='size-6 lg:hidden'
           src={status === 'loading' ? null : session?.user?.image}
         />
       }
