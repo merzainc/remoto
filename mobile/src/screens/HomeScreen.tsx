@@ -16,7 +16,7 @@ import mapStyles from '@/constants/MapStyles';
 import usePermissions from '@/hooks/usePermissions';
 import logger from '@/utility/logger';
 import { lightTheme } from '@expo/styleguide-native';
-import { useBatteryLevel } from 'expo-battery';
+import * as Battery from 'expo-battery';
 
 const STORAGE_KEY = 'expo-home-locations';
 const LOCATION_UPDATES_TASK = 'location-updates';
@@ -134,7 +134,38 @@ function BackgroundLocationMapView() {
   const [location, setLocation] =
     React.useState<Location.LocationObject | null>(null);
   const { user } = useAuth();
-  const batteryLevel = useBatteryLevel();
+  const [isAvailable, setIsAvailable] = React.useState<boolean | null>(null);
+  const [batteryLevel, setBatteryLevel] = React.useState(-1);
+  const [batteryState, setBatteryState] = React.useState(
+    Battery.BatteryState.UNKNOWN
+  );
+
+  React.useEffect(() => {
+    (async () => {
+      const [isAvailable, batteryLevel, batteryState] = await Promise.all([
+        Battery.isAvailableAsync(),
+        Battery.getBatteryLevelAsync(),
+        Battery.getBatteryStateAsync(),
+        Battery.isLowPowerModeEnabledAsync(),
+        Battery.isBatteryOptimizationEnabledAsync(),
+      ]);
+
+      setIsAvailable(isAvailable || false);
+      setBatteryLevel(batteryLevel);
+      setBatteryState(batteryState);
+    })();
+    const batteryLevelListener = Battery.addBatteryLevelListener(
+      ({ batteryLevel }) => setBatteryLevel(batteryLevel)
+    );
+    const batteryStateListener = Battery.addBatteryStateListener(
+      ({ batteryState }) => setBatteryState(batteryState)
+    );
+
+    return () => {
+      batteryLevelListener && batteryLevelListener.remove();
+      batteryStateListener && batteryStateListener.remove();
+    };
+  }, []);
 
   const onFocus = React.useCallback(() => {
     let subscription: EventSubscription | null = null;
@@ -208,8 +239,10 @@ function BackgroundLocationMapView() {
             response.coords.longitude
           ),
           battery: {
-            status: 'CHARGING',
-            level: batteryLevel,
+            level: isAvailable ? batteryLevel.toFixed(2) : 'NOT SUPPORTED',
+            status: isAvailable
+              ? getBatteryStateString(batteryState)
+              : 'NOT SUPPORTED',
           },
         })
           .then((res) => {
@@ -547,3 +580,17 @@ const styles = StyleSheet.create({
     color: lightTheme.text.default,
   },
 });
+
+function getBatteryStateString(batteryState: Battery.BatteryState): string {
+  switch (batteryState) {
+    case Battery.BatteryState.UNPLUGGED:
+      return 'UNPLUGGED';
+    case Battery.BatteryState.CHARGING:
+      return 'CHARGING';
+    case Battery.BatteryState.FULL:
+      return 'FULL';
+    case Battery.BatteryState.UNKNOWN:
+    default:
+      return 'UNKNOWN';
+  }
+}

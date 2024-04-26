@@ -228,12 +228,10 @@ TaskManager.defineTask(
     const stateString =
       Location.GeofencingRegionState[region.state].toLowerCase();
 
-    logger.logMessage(`${stateString} region ${region.identifier}`);
-
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Remoto Geofencing',
-        body: `You have moved ${stateString} the default region`,
+        body: `You are now ${stateString} the ${region.identifier} region`,
         data: region,
       },
       trigger: null,

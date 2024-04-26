@@ -1,6 +1,6 @@
 import Point, { Activity } from '@/constants/Model';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Divider, Row, Text, View } from 'expo-dev-client-components';
+import { Row, Text, View } from 'expo-dev-client-components';
 import * as Location from 'expo-location';
 import { LocationSubscription } from 'expo-location';
 import * as SQLite from 'expo-sqlite';
@@ -9,8 +9,6 @@ import { StyleSheet, ToastAndroid } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
 
 import { Button } from '@/components/Button';
-import { ListItem } from '@/components/list';
-import { SectionHeader } from '@/components/SectionHeader';
 import mapStyles from '@/constants/MapStyles';
 import { lightTheme } from '@expo/styleguide-native';
 import {
@@ -300,17 +298,6 @@ const Tracking = ({ navigation }: any) => {
                 style={styles.button}
               />
             )}
-          </View>
-
-          <View>
-            <SectionHeader header='Task Details' />
-            <View bg='default' border='default' overflow='hidden'>
-              <ConstantItem title='Task ID' value='H67281' />
-              <Divider style={{ height: 1 }} />
-              <ListItem title='Instructions' value='Read' onPress={() => {}} />
-              <Divider style={{ height: 1 }} />
-              <ConstantItem title='Start Time' value='12:50PM' />
-            </View>
           </View>
         </View>
       </View>
