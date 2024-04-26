@@ -22,8 +22,8 @@ export default function UserNav() {
     >
       <DropdownMenuContent>
         <div className='px-2'>
-          <p className='prose prose-slate text-sm'>Signed in as</p>
-          <p className='prose prose-slate truncate text-sm font-medium text-slate-900'>
+          <p className='text-secondary text-xs'>Signed in as</p>
+          <p className='text-default truncate text-sm font-medium'>
             {status === 'loading' ? 'Loading..' : session?.user?.email}
           </p>
         </div>
