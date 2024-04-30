@@ -1,8 +1,8 @@
-# Remoto 
+# Remoto
 
-<!-- <p align="center">
-<img src='assets/images/icon.png' width='100'> 
-</p> -->
+<p align="center">
+<img src='mobile/assets/logo-dark.png' width='100'>
+</p>
 
  Smart security real-time patrol monitoring research project using GIS, GPS, and smartphone technology. Capstone project being implemented as part of my submission for a B.Tech Honours Degree in IT at [HIT](https://hit.ac.zw).
 

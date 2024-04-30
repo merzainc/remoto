@@ -1,7 +1,3 @@
-import { authOptions } from '@/lib/auth';
-import { getCurrentUser } from '@/lib/session';
-import { redirect } from 'next/navigation';
-
 const stats = [
   { name: 'Total Guards', stat: '12' },
   { name: 'Active Security', stat: '04' },
@@ -10,14 +6,20 @@ const stats = [
 ];
 
 export default async function HomePage() {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || '/login');
-  }
   return (
     <div>
-      <h2 className='heading-xl font-semibold'>Dashboard</h2>
+      <header id='header' className='relative z-20'>
+        <div>
+          <div className='flex items-center'>
+            <h1 className='inline-block text-2xl  font-semibold text-zinc-900 tracking-tight'>
+              Dashboard
+            </h1>
+          </div>
+        </div>
+        <p className='mt-2 text-secondary'>
+          Monitor the locations of your organization&apos;s security teams on shift.
+        </p>
+      </header>
       <div className='mt-8'>
         <dl className='mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3 xl:grid-cols-4'>
           {stats.map((item) => (
@@ -25,9 +27,7 @@ export default async function HomePage() {
               key={item.name}
               className='overflow-hidden border border-default rounded-lg bg-default px-4 py-5 shadow sm:p-6'
             >
-              <dt className='truncate text-sm font-medium text-secondary'>
-                {item.name}
-              </dt>
+              <dt className='truncate text-sm font-medium text-secondary'>{item.name}</dt>
               <dd className='mt-1 text-3xl font-semibold tracking-tight text-default'>
                 {item.stat}
               </dd>
