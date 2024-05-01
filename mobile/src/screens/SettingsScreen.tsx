@@ -119,13 +119,13 @@ export default function SettingScreen() {
           <Divider style={{ height: 1 }} />
           <ConstantItem title='Build Number' value='dcb59d' />
           <Divider style={{ height: 1 }} />
-          <ConstantItem title='App Version' value='v1.21' />
+          <ConstantItem title='App Version' value='v1.1.21' />
           <Divider style={{ height: 1 }} />
           <ConstantItem title='Supported SDK' value='50.0.0' />
         </View>
         <View py='small' px='medium'>
           <Text style={{ fontSize: 14 }} color='secondary' type='InterRegular'>
-            Remoto for Android v1.21 (dcb59d) store bundled{' '}
+            Remoto for Android v1.1.21 (dcb59d) store bundled{' '}
             {Device.supportedCpuArchitectures
               ? Device.supportedCpuArchitectures[0]
               : 'arm64-v8a'}
