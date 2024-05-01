@@ -105,7 +105,7 @@ export default function SettingScreen() {
         </View>
         <View py='small' px='medium'>
           <Text style={{ fontSize: 14 }} color='secondary' type='InterRegular'>
-            To update all settings across all screens, pull to refresh.
+            Background connection is required and can't be turned off.
           </Text>
         </View>
       </View>
@@ -117,7 +117,7 @@ export default function SettingScreen() {
             value={Device.modelName ? Device.modelName : 'MN-H2718X'}
           />
           <Divider style={{ height: 1 }} />
-          <ConstantItem title='Build Number' value='598367a' />
+          <ConstantItem title='Build Number' value='dcb59d' />
           <Divider style={{ height: 1 }} />
           <ConstantItem title='App Version' value='v1.21' />
           <Divider style={{ height: 1 }} />
@@ -125,7 +125,10 @@ export default function SettingScreen() {
         </View>
         <View py='small' px='medium'>
           <Text style={{ fontSize: 14 }} color='secondary' type='InterRegular'>
-            Remoto for Android v1.14 (598367a) store bundled arm64-v8a
+            Remoto for Android v1.21 (dcb59d) store bundled{' '}
+            {Device.supportedCpuArchitectures
+              ? Device.supportedCpuArchitectures[0]
+              : 'arm64-v8a'}
           </Text>
         </View>
       </View>
