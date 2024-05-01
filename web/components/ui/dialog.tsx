@@ -92,7 +92,7 @@ export function DialogTitle({ className, ...props }: React.ComponentPropsWithout
           'text-balance text-lg/6 font-semibold text-slate-950 sm:text-base/6 dark:text-white'
         )}
       />
-      <XCloseIcon className='size-6 hidden lg:inline-flex' />
+      {/* <XCloseIcon className='size-6 hidden lg:inline-flex' /> */}
     </div>
   );
 }
