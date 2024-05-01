@@ -1,6 +1,9 @@
 'use client';
+import { useToast } from '@/components/toast/use-toast';
 import { Button } from '@/components/ui/button';
-import { MarkerPin04Icon, Settings02Icon } from '@expo/styleguide-icons';
+import dbFire from '@/config/firebase';
+import { MarkerPin04Icon } from '@expo/styleguide-icons';
+import { doc, updateDoc } from 'firebase/firestore';
 import * as React from 'react';
 import AppSettingsForm from './AppSettings';
 
@@ -12,6 +15,7 @@ type Props = {
 };
 
 function ControlPanel({ center, radius, onRadiusChanged, onCenterChanged }: Props) {
+  const { toast } = useToast();
   return (
     <div className='control-panel'>
       <h3>Remoto Configurations</h3>
@@ -51,7 +55,30 @@ function ControlPanel({ center, radius, onRadiusChanged, onCenterChanged }: Prop
         </div>
       </div>
       <div className='flex flex-col gap-y-3'>
-        <Button>
+        <Button
+          onClick={() => {
+            const settingsRef = doc(dbFire, 'settings', 'R100');
+            updateDoc(settingsRef, {
+              region: {
+                radius: radius,
+                lat: center.lat,
+                lng: center.lng,
+              },
+            })
+              .then((res) =>
+                toast({
+                  title: 'Settings Update',
+                  description: 'Geofence setting region was updated successfully.',
+                })
+              )
+              .catch((err) =>
+                toast({
+                  title: 'Settings Update',
+                  description: 'Failed to update the geofence setting, try again.',
+                })
+              );
+          }}
+        >
           <MarkerPin04Icon className='size-5' />
           Save Region
         </Button>
