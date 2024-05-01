@@ -1,4 +1,6 @@
 @import 'base.css';
-
+/* control panel styles start */
+@import 'control-panel.css';
+/* control panel styles end */
 @import 'tailwindcss/components';
 @import 'utilities.css';
