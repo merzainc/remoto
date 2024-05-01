@@ -1,3 +1,5 @@
+import Container from '@/components/Container';
+
 const stats = [
   { name: 'Total Guards', stat: '12' },
   { name: 'Active Security', stat: '04' },
@@ -7,7 +9,7 @@ const stats = [
 
 export default async function HomePage() {
   return (
-    <div>
+    <Container>
       <header id='header' className='relative z-20'>
         <div>
           <div className='flex items-center'>
@@ -25,7 +27,7 @@ export default async function HomePage() {
           {stats.map((item) => (
             <div
               key={item.name}
-              className='overflow-hidden border border-default rounded-lg bg-default px-4 py-5 shadow sm:p-6'
+              className='overflow-hidden border border-zinc-200 rounded-lg bg-default px-4 py-5 shadow sm:p-6'
             >
               <dt className='truncate text-sm font-medium text-secondary'>{item.name}</dt>
               <dd className='mt-1 text-3xl font-semibold tracking-tight text-default'>
@@ -35,6 +37,6 @@ export default async function HomePage() {
           ))}
         </dl>
       </div>
-    </div>
+    </Container>
   );
 }
