@@ -67,14 +67,34 @@ model VerificationToken {
 }
 
 model Guard {
-  id        Int      @id @default(autoincrement())
+  force     String     @id @unique @db.VarChar(255)
   name      String
-  force     String   @unique @db.VarChar(5)
   phone     String?
   password  String
-  device_id String?  @db.VarChar(255)
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  device_id String?    @db.VarChar(255)
+  createdAt DateTime   @default(now()) @map(name: "created_at")
+  updatedAt DateTime   @default(now()) @map(name: "updated_at")
+  Activity  Activity[]
 
   @@map(name: "guards")
+}
+
+model Activity {
+  id         Int     @id @default(autoincrement())
+  start      String  @db.VarChar(255)
+  end        String  @db.VarChar(255)
+  distance   Int
+  guard      Guard   @relation(fields: [guardForce], references: [force])
+  guardForce String  @db.VarChar(255)
+  Point      Point[]
+}
+
+model Point {
+  id       Int      @id @default(autoincrement())
+  num      Int
+  lng      Float
+  lat      Float
+  activity Activity @relation(fields: [activityId], references: [id])
+
+  activityId Int
 }

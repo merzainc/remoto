@@ -99,20 +99,7 @@ export default function LivePositions() {
 
   return (
     <div>
-      <header id='header' className='relative z-20'>
-        <div>
-          <div className='flex items-center'>
-            <h1 className='inline-block text-2xl  font-semibold text-zinc-900 tracking-tight'>
-              Guard Tracking
-            </h1>
-          </div>
-        </div>
-        <p className='mt-2  text-secondary'>
-          Monitor the locations of your organization&apos;s security teams on shift.
-        </p>
-      </header>
-
-      <div className='w-full border border-default shadow h-[600px] mt-16'>
+      <div className='w-full h-screen flex flex-1'>
         {isLoaded ? (
           <GoogleMap
             mapContainerClassName='hocus:outline-none outline-none border-none '

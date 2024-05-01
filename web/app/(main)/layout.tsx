@@ -24,13 +24,7 @@ export default function RootLayout({
           <div className='flex mx-auto justify-between items-center w-full h-[calc(100vh-60px)]'>
             <SideBar />
             <main className='w-full h-[calc(100vh-60px)] bg-screen flex overflow-hidden max-lg-gutters:overflow-auto'>
-              <div className='size-full overflow-x-hidden overflow-y-auto'>
-                <div className='max-w-screen-xl mx-auto'>
-                  <div className='mx-auto py-10 px-14 max-lg-gutters:px-4 max-lg-gutters:pt-5 max-lg-gutters:pb-12'>
-                    {children}
-                  </div>
-                </div>
-              </div>
+              <div className='size-full overflow-x-hidden overflow-y-auto'>{children}</div>
             </main>
           </div>
         </div>

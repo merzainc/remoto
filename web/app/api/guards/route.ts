@@ -44,10 +44,7 @@ export async function POST(request: NextRequest) {
       },
     });
     if (guard) {
-      return NextResponse.json(
-        { message: 'Guard is already registered' },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: 'Guard is already registered' }, { status: 400 });
     }
     guard = await db.guard.create({
       data: {
@@ -68,10 +65,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      { message: 'Guard was successfully registered' },
-      { status: 201 }
-    );
+    return NextResponse.json({ message: 'Guard was successfully registered' }, { status: 201 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
