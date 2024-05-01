@@ -1,49 +1,11 @@
-//@ts-nocheck
-
-import { Button } from '@/components/ui/button';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { formatDate } from '@/lib';
-import { PlusIcon } from '@expo/styleguide-icons';
-import { Guard } from '@prisma/client';
-import { UserGroupIcon } from '@heroicons/react/24/outline';
 import Container from '@/components/Container';
-import AddGuardForm from './AddGuardForm';
+import { Button } from '@/components/ui/button';
+import { PlusIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
-const people = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-  // More people...
-];
-
-async function getGuards() {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/guards`, { cache: 'no-cache' });
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-}
-
-export default async function GuardsPage() {
-  const guards = await getGuards();
+export default function GuardsPage() {
   return (
     <Container>
-      <div className='grid w-full [--gutter:theme(spacing.6)] sm:[--gutter:theme(spacing.8)]  grid-cols-1 items-center pb-2 pt-8'>
+      <div className='grid w-full  grid-cols-1 items-center pb-2 pt-8'>
         <div className='flex items-center justify-between gap-3 max-md-gutters:flex-col max-md-gutters:items-start'>
           <div className='grid grid-cols-1 gap-2'>
             <div className='flex items-center gap-3'>
@@ -57,73 +19,9 @@ export default async function GuardsPage() {
             </p>
           </div>
           <div className='justify-self-end'>
-            <AddGuardForm />
-          </div>
-        </div>
-      </div>
-
-      <div className='mt-8 flow-root'>
-        <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-          <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
-            <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg'>
-              <table className='min-w-full divide-y divide-zinc-300'>
-                <thead className='bg-zinc-50'>
-                  <tr>
-                    <th
-                      scope='col'
-                      className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-zinc-900 sm:pl-6'
-                    >
-                      Force ID
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-3 py-3.5 text-left text-sm font-semibold text-zinc-900'
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-3 py-3.5 text-left text-sm font-semibold text-zinc-900'
-                    >
-                      Phone
-                    </th>
-                    <th
-                      scope='col'
-                      className='px-3 py-3.5 text-left text-sm font-semibold text-zinc-900'
-                    >
-                      Created At
-                    </th>
-
-                    <th scope='col' className='relative py-3.5 pl-3 pr-4 sm:pr-6'>
-                      <span className='sr-only'>Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className='divide-y divide-zinc-200 bg-white'>
-                  {guards.map((guard) => (
-                    <tr key={guard.force}>
-                      <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-zinc-900 sm:pl-6'>
-                        {guard.force}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-500'>
-                        {guard.name}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-500'>
-                        {guard.phone}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-zinc-500'>
-                        {formatDate(guard.createdAt)}
-                      </td>
-                      <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                        <a href='#' className='text-red-600 hover:text-red-900'>
-                          Remove<span className='sr-only'>, {guard.force}</span>
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <Button type='button' color='blue'>
+              <PlusIcon className='size-4' /> Add New Guard
+            </Button>
           </div>
         </div>
       </div>
