@@ -134,38 +134,8 @@ function BackgroundLocationMapView() {
   const [location, setLocation] =
     React.useState<Location.LocationObject | null>(null);
   const { user } = useAuth();
-  const [isAvailable, setIsAvailable] = React.useState<boolean | null>(null);
-  const [batteryLevel, setBatteryLevel] = React.useState(-1);
-  const [batteryState, setBatteryState] = React.useState(
-    Battery.BatteryState.UNKNOWN
-  );
-
-  React.useEffect(() => {
-    (async () => {
-      const [isAvailable, batteryLevel, batteryState] = await Promise.all([
-        Battery.isAvailableAsync(),
-        Battery.getBatteryLevelAsync(),
-        Battery.getBatteryStateAsync(),
-        Battery.isLowPowerModeEnabledAsync(),
-        Battery.isBatteryOptimizationEnabledAsync(),
-      ]);
-
-      setIsAvailable(isAvailable || false);
-      setBatteryLevel(batteryLevel);
-      setBatteryState(batteryState);
-    })();
-    const batteryLevelListener = Battery.addBatteryLevelListener(
-      ({ batteryLevel }) => setBatteryLevel(batteryLevel)
-    );
-    const batteryStateListener = Battery.addBatteryStateListener(
-      ({ batteryState }) => setBatteryState(batteryState)
-    );
-
-    return () => {
-      batteryLevelListener && batteryLevelListener.remove();
-      batteryStateListener && batteryStateListener.remove();
-    };
-  }, []);
+  const batteryLevel = Battery.useBatteryLevel();
+  const batteryState = Battery.useBatteryState();
 
   const onFocus = React.useCallback(() => {
     let subscription: EventSubscription | null = null;
@@ -232,26 +202,26 @@ function BackgroundLocationMapView() {
           timeInterval: 10 * 1000, // 1 minute
           distanceInterval: 0.1,
         },
-        (response) => {
+        async (response) => {
           if (isMounted) {
             setLocation(response);
-            console.log(response);
+            const powerState = await Battery.getPowerStateAsync();
             const positionsRef = doc(db, 'positions', user?.force as string);
             updateDoc(positionsRef, {
               name: user?.name,
+              speed: response.coords.speed,
               location: new GeoPoint(
                 response.coords.latitude,
                 response.coords.longitude
               ),
               battery: {
-                level: isAvailable ? batteryLevel.toFixed(2) : 'NOT SUPPORTED',
-                status: isAvailable
-                  ? getBatteryStateString(batteryState)
-                  : 'NOT SUPPORTED',
+                level: powerState.batteryLevel.toFixed(2),
+                status: getBatteryStateString(powerState.batteryState),
+                powerMode: powerState.lowPowerMode,
               },
             })
               .then((res) => {
-                logger.logMessage('Send to db');
+                // logger.logMessage('Send to db');
               })
               .catch((err) => console.error(err));
             mapViewRef.current?.animateCamera(

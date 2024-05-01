@@ -62,7 +62,7 @@ export default function LoginScreen() {
         <WithFeedback
           disabled={isLoading}
           isLoading={isLoading}
-          style={{ paddingVertical: 10 }}
+          style={{ paddingVertical: 12 }}
           onPress={async () => {
             setIsLoading(true);
             if (guard.force === '' || guard.password === '') {

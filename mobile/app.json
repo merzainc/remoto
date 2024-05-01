@@ -2,7 +2,7 @@
   "expo": {
     "name": "Remoto",
     "slug": "remoto",
-    "version": "1.1.20",
+    "version": "1.1.21",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["ios", "android"],

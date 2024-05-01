@@ -2,13 +2,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import * as TaskManager from 'expo-task-manager';
+import { doc, getDoc } from 'firebase/firestore';
 import React from 'react';
 import { NativeSyntheticEvent, StyleSheet, Text, View } from 'react-native';
 import MapView, { Circle } from 'react-native-maps';
 
 import Button from '@/components/AppButton';
+import db from '@/config/firebase';
 import mapStyles from '@/constants/MapStyles';
-import logger from '@/utility/logger';
 
 const GEOFENCING_TASK = 'geofencing';
 
@@ -17,6 +18,16 @@ interface GeofencingRegion {
   latitude: number;
   longitude: number;
   radius: number;
+}
+
+interface Setting {
+  filter: number;
+  interval: number;
+  region: {
+    lat: number;
+    lng: number;
+    radius: number;
+  };
 }
 
 export interface MapEvent<T = object>
@@ -82,6 +93,7 @@ function reducer(
 export default function BoundaryScreen() {
   const mapViewRef = React.useRef<MapView>(null);
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [defaultRegion, setDefaultRegion] = React.useState<Setting>();
 
   const onFocus = React.useCallback(() => {
     let isActive = true;
@@ -107,6 +119,7 @@ export default function BoundaryScreen() {
           },
         });
       }
+      setTrackingRegion();
     })();
     return () => (isActive = false);
   }, []);
@@ -125,6 +138,32 @@ export default function BoundaryScreen() {
     }
     dispatch({ type: 'toggle' });
   }, [state.isGeofencing, state.geofencingRegions]);
+
+  const setTrackingRegion = async () => {
+    const settingsRef = doc(db, 'settings', 'R100');
+    const docSnap = await getDoc(settingsRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      //@ts-ignore
+      setDefaultRegion(data);
+      dispatch({ type: 'updateRegions', geofencingRegions: [] });
+      dispatch({ type: 'clearRegions' });
+      const newRegion = {
+        identifier: `${data.region.lat},${data.region.lng}`,
+        latitude: data.region.lat,
+        longitude: data.region.lng,
+        radius: data.region.radius,
+      };
+      dispatch({ type: 'updateRegions', geofencingRegions: [newRegion] });
+
+      if (await Location.hasStartedGeofencingAsync(GEOFENCING_TASK)) {
+        // update existing geofencing task
+        await Location.startGeofencingAsync(GEOFENCING_TASK, [newRegion]);
+      }
+    } else {
+      console.log('No such document!');
+    }
+  };
 
   const centerMap = React.useCallback(async () => {
     const { coords } = await Location.getCurrentPositionAsync();
@@ -157,18 +196,22 @@ export default function BoundaryScreen() {
   };
 
   const renderRegions = React.useCallback(() => {
-    return state.geofencingRegions.map((region) => {
-      return (
-        <Circle
-          key={region.identifier}
-          center={region}
-          radius={region.radius}
-          strokeColor='rgba(78,155,222,0.8)'
-          fillColor='rgba(78,155,222,0.2)'
-        />
-      );
-    });
-  }, [state.geofencingRegions]);
+    return (
+      <>
+        {defaultRegion && (
+          <Circle
+            center={{
+              latitude: defaultRegion.region.lat,
+              longitude: defaultRegion.region.lng,
+            }}
+            radius={defaultRegion.region.radius}
+            strokeColor='rgba(78,155,222,0.8)'
+            fillColor='rgba(78,155,222,0.2)'
+          />
+        )}
+      </>
+    );
+  }, [defaultRegion]);
 
   if (!state.initialRegion) {
     return null;
@@ -189,7 +232,6 @@ export default function BoundaryScreen() {
         ref={mapViewRef}
         style={styles.mapView}
         initialRegion={state.initialRegion}
-        onPress={onMapPress}
         showsCompass={false}
         showsUserLocation
       >
@@ -198,12 +240,15 @@ export default function BoundaryScreen() {
       <View style={styles.buttons}>
         <View style={styles.leftButtons}>
           <Button
-            disabled={
-              !state.isGeofencing && state.geofencingRegions.length === 0
-            }
+            // disabled={
+            //   !state.isGeofencing && state.geofencingRegions.length === 0
+            // }
             buttonStyle={styles.button}
             title={state.isGeofencing ? 'Stop geofencing' : 'Start geofencing'}
-            onPress={toggleGeofencing}
+            onPress={() => {
+              setTrackingRegion();
+              toggleGeofencing();
+            }}
           />
         </View>
         <Button
@@ -231,7 +276,7 @@ TaskManager.defineTask(
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Remoto Geofencing',
-        body: `You are now ${stateString} the ${region.identifier} region`,
+        body: `You are currently ${stateString} the [${region.identifier}] region.`,
         data: region,
       },
       trigger: null,

@@ -10,7 +10,6 @@ import ThemedStatusBar from './components/ThemedStatusBar';
 import { AuthNavigator } from './navigation';
 import AppNavigator from './navigation/AppNavigator';
 import { navigationRef } from './navigation/RootNavigation';
-import logger from './utility/logger';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -58,7 +57,6 @@ export default function HomeApp() {
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       await SplashScreen.hideAsync();
-      logger.logMessage('SplashScreen is hidden');
     }
   }, [appIsReady]);
 

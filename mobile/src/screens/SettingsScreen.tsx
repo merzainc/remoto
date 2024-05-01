@@ -119,7 +119,7 @@ export default function SettingScreen() {
           <Divider style={{ height: 1 }} />
           <ConstantItem title='Build Number' value='598367a' />
           <Divider style={{ height: 1 }} />
-          <ConstantItem title='App Version' value='v1.14' />
+          <ConstantItem title='App Version' value='v1.21' />
           <Divider style={{ height: 1 }} />
           <ConstantItem title='Supported SDK' value='50.0.0' />
         </View>
