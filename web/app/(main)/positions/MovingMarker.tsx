@@ -1,8 +1,8 @@
 'use client';
-import { Marker } from '@vis.gl/react-google-maps';
-import { useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
 import db from '@/config/firebase';
+import { InfoWindow, Marker, Pin } from '@vis.gl/react-google-maps';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 interface Point {
   _lat: number;
@@ -23,6 +23,7 @@ interface Position {
 
 export const MovingMarker = () => {
   const [guardPositions, setGuardPositions] = useState<Position[]>([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'positions'), (snapshot) => {
@@ -39,8 +40,7 @@ export const MovingMarker = () => {
           });
         }
       });
-      //@ts-ignore
-      console.log(positions);
+
       //@ts-ignore
       setGuardPositions(positions);
     });
@@ -62,10 +62,24 @@ export const MovingMarker = () => {
   return (
     <>
       {guardPositions.map((point) => (
-        <Marker
-          key={point.id}
-          position={{ lat: point.location._lat, lng: point.location._long }}
-        ></Marker>
+        <>
+          <Marker
+            onClick={() => setOpen(true)}
+            key={point.id}
+            position={{ lat: point.location._lat, lng: point.location._long }}
+          />
+          {open && (
+            <InfoWindow
+              position={{ lat: point.location._lat, lng: point.location._long }}
+              onCloseClick={() => setOpen(false)}
+            >
+              <p>Force ID: {point.id}</p>
+              <p>Name: {point.name}</p>
+              <p>Battery Level: {point.battery.level}</p>
+              <p>Battery Status: {point.battery.status}</p>
+            </InfoWindow>
+          )}
+        </>
       ))}
     </>
   );

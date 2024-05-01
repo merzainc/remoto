@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/dropdown';
 import { AvatarButton } from './ui/avatar';
 
-export default async function UserNav() {
+export default function UserNav() {
   const defaultAvatar =
     'https://lh3.googleusercontent.com/a/ACg8ocLIZIJU1N_f6fxFMM8ECAZ1vd9H_dMgIuN7D43NMBRYbH8=s96-c';
 
