@@ -222,42 +222,59 @@ function BackgroundLocationMapView() {
   useFocusEffect(onFocus);
 
   React.useEffect(() => {
-    Location.watchPositionAsync(
-      {
-        accuracy: Location.LocationAccuracy.Highest,
-        timeInterval: 10 * 1000, // 1 minute
-        distanceInterval: 0.1,
-      },
-      (response) => {
-        setLocation(response);
+    let isMounted = true;
+    let subscription: Location.LocationSubscription | null = null;
 
-        const positionsRef = doc(db, 'positions', user?.force as string);
-        updateDoc(positionsRef, {
-          name: user?.name,
-          location: new GeoPoint(
-            response.coords.latitude,
-            response.coords.longitude
-          ),
-          battery: {
-            level: isAvailable ? batteryLevel.toFixed(2) : 'NOT SUPPORTED',
-            status: isAvailable
-              ? getBatteryStateString(batteryState)
-              : 'NOT SUPPORTED',
-          },
-        })
-          .then((res) => {
-            logger.logMessage('Send to db');
-          })
-          .catch((err) => console.error(err));
-        mapViewRef.current?.animateCamera(
-          {
-            pitch: 50,
-            center: response.coords,
-          },
-          { duration: 3000 }
-        );
+    const startWatchingPosition = async () => {
+      const locSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.LocationAccuracy.Highest,
+          timeInterval: 10 * 1000, // 1 minute
+          distanceInterval: 0.1,
+        },
+        (response) => {
+          if (isMounted) {
+            setLocation(response);
+            console.log(response);
+            const positionsRef = doc(db, 'positions', user?.force as string);
+            updateDoc(positionsRef, {
+              name: user?.name,
+              location: new GeoPoint(
+                response.coords.latitude,
+                response.coords.longitude
+              ),
+              battery: {
+                level: isAvailable ? batteryLevel.toFixed(2) : 'NOT SUPPORTED',
+                status: isAvailable
+                  ? getBatteryStateString(batteryState)
+                  : 'NOT SUPPORTED',
+              },
+            })
+              .then((res) => {
+                logger.logMessage('Send to db');
+              })
+              .catch((err) => console.error(err));
+            mapViewRef.current?.animateCamera(
+              {
+                pitch: 50,
+                center: response.coords,
+              },
+              { duration: 3000 }
+            );
+          }
+        }
+      );
+      subscription = locSubscription;
+    };
+
+    startWatchingPosition();
+
+    return () => {
+      isMounted = false;
+      if (subscription) {
+        subscription.remove();
       }
-    );
+    };
   }, []);
 
   const startLocationUpdates = React.useCallback(
