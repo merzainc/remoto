@@ -10,6 +10,7 @@ export default function LocationUpdatesPage() {
     <APIProvider libraries={['marker']} apiKey={process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY!}>
       <Map
         styles={mapStyles}
+        style={{ overflow: 'hidden', width: '100%', height: '100%' }}
         fullscreenControl
         defaultZoom={18}
         defaultCenter={{ lat: -17.837938230551487, lng: 31.00712999655143 }}

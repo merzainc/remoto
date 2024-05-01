@@ -1,5 +1,6 @@
 import NavBar from '@/components/NavBar';
 import SideBar from '@/components/SideBar';
+import { Toaster } from '@/components/toast/toaster';
 import '@/css/fonts.css';
 import '@/css/main.css';
 import type { Metadata } from 'next';
@@ -28,6 +29,7 @@ export default function RootLayout({
             </main>
           </div>
         </div>
+        <Toaster />
       </body>
     </html>
   );
