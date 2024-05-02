@@ -38,9 +38,12 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         force: guard.force,
       },
     });
-    return NextResponse.json({}, { status: 200 });
+    return NextResponse.json(
+      { message: 'Guard was successfully removed from database' },
+      { status: 200 }
+    );
   } catch (error: any) {
     console.log(error);
-    return NextResponse.json({ message: error.message }, { status: 400 });
+    return NextResponse.json({ message: 'Failed to delete guard, try again' }, { status: 400 });
   }
 }

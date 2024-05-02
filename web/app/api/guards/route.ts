@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log(body);
     const result = GuardSchema.safeParse(body);
     //@ts-ignore
     if (result.error) {
@@ -56,12 +57,14 @@ export async function POST(request: NextRequest) {
     });
 
     await setDoc(doc(dbFire, 'positions', guard.force), {
+      speed: 0,
       name: guard.name,
       signedIn: false,
       location: new GeoPoint(0, 0),
       battery: {
         level: 'UNKNOWN',
         status: 'UNKNOWN',
+        powerMode: false,
       },
     });
 

@@ -1,15 +1,36 @@
 'use client';
 import mapStyles from '@/components/mapStyles';
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
-import ControlPanel from './ControlPanel';
-import { useState } from 'react';
+import { APIProvider, InfoWindow, Map, Marker } from '@vis.gl/react-google-maps';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Circle } from './cirlce';
+import ControlPanel from './ControlPanel';
 
 const INITIAL_CENTER = { lat: -17.837938230551487, lng: 31.00712999655143 };
+
+interface Point {
+  id: number;
+  name: string;
+  lat: number;
+  lng: number;
+}
 
 function MapConfigurationsPage() {
   const [center, setCenter] = useState(INITIAL_CENTER);
   const [radius, setRadius] = useState(45);
+  const [points, setPoints] = useState<Point[]>([]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3000/api/points')
+      .then((res) => {
+        setPoints(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const changeCenter = (newCenter: google.maps.LatLng | null) => {
     if (!newCenter) return;
@@ -40,6 +61,26 @@ function MapConfigurationsPage() {
           editable
           draggable
         />
+        {points.length > 0 &&
+          points.map((pt) => (
+            <>
+              <Marker
+                onClick={() => setOpen(true)}
+                key={pt.id}
+                position={{ lat: pt.lat, lng: pt.lng }}
+              />
+              {open && (
+                <InfoWindow
+                  position={{ lat: pt.lat, lng: pt.lng }}
+                  onCloseClick={() => setOpen(false)}
+                >
+                  <p className='text-slate-900'>Name: {pt.name}</p>
+                  <p>Latitude: {pt.lat}</p>
+                  <p>Longitude: {pt.lng}</p>
+                </InfoWindow>
+              )}
+            </>
+          ))}
       </Map>
       <ControlPanel
         center={center}
