@@ -1,10 +1,12 @@
 import Container from '@/components/Container';
+import { Overview } from '@/components/OverView';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
 
 const stats = [
-  { name: 'Total Guards', stat: '12' },
+  { name: 'Total Guards', stat: '04' },
   { name: 'Active Security', stat: '04' },
-  { name: 'Assigned Tasks', stat: '16' },
-  { name: 'Completed Tasks', stat: '05' },
+  { name: 'Assigned Tasks', stat: '01' },
+  { name: 'Completed Tasks', stat: '01' },
 ];
 
 export default async function HomePage() {
@@ -36,6 +38,23 @@ export default async function HomePage() {
             </div>
           ))}
         </dl>
+      </div>
+      <div className='grid gap-4 mt-16 md:grid-cols-2 lg:grid-cols-7'>
+        <Card className='col-span-4'>
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+          </CardHeader>
+          <CardContent className='pl-2'>
+            <Overview />
+          </CardContent>
+        </Card>
+        <Card className='col-span-3'>
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Your recent activity or tasks</CardDescription>
+          </CardHeader>
+          <CardContent></CardContent>
+        </Card>
       </div>
     </Container>
   );

@@ -19,6 +19,7 @@ interface Position {
   name: string;
   location: Point;
   battery: Battery;
+  speed: number;
 }
 
 export const MovingMarker = () => {
