@@ -54,7 +54,6 @@ export default function ActivityScreen() {
                 distance: a.distance,
                 points: points as Point[],
               });
-              console.log(a.id, a.start, a.end, a.distance, points);
             }
 
             setActivities(handleActivs);
@@ -68,8 +67,6 @@ export default function ActivityScreen() {
       );
     });
   }, [refresh]);
-
-  console.log(activities);
 
   if (!activities)
     return (
