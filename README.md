@@ -1,9 +1,5 @@
 # Remoto
 
-<p align="center">
-<img src='mobile/assets/logo-dark.png' width='100'>
-</p>
-
  Optimising security patrol routing and monitoring research project using GIS and GPS. Capstone project being implemented as part of my submission for a B.Tech Honours Degree in IT at [HIT](https://hit.ac.zw).
 
 ## License
