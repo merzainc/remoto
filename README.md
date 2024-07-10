@@ -4,7 +4,7 @@
 <img src='mobile/assets/logo-dark.png' width='100'>
 </p>
 
- Smart security real-time patrol monitoring research project using GIS, GPS, and smartphone technology. Capstone project being implemented as part of my submission for a B.Tech Honours Degree in IT at [HIT](https://hit.ac.zw).
+ Optimising security patrol routing and monitoring research project using GIS and GPS. Capstone project being implemented as part of my submission for a B.Tech Honours Degree in IT at [HIT](https://hit.ac.zw).
 
 ## License
 
